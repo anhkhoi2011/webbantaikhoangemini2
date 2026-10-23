@@ -1,4 +1,6 @@
-Bản sửa ngày 23/10/2026 — build 2026-10-23-visit-orders
+Cập nhật 24/10/2026: ApiPay BIDV - NGO ANH KHOI, STK 8809642706, VA V1T61023152838; chỉ thông báo Telegram về -5585627393.
+
+Bản sửa ngày 24/10/2026 — build 2026-10-24-apipay-bidv
 
 Mục tiêu: nối đúng lượt truy cập → link/nguồn → mã đơn → thanh toán → Telegram và Google Sheet.
 Tài liệu này hướng dẫn tích hợp Google Sheet đang dùng. Chưa có URL hoặc cấu hình một Google Form riêng.
@@ -11,15 +13,17 @@ Dữ liệu được ghi
 - Mỗi lần tải trang có visitId mới; tải lại cùng URL có thể giữ sessionId trong 30 phút nhưng vẫn là một lượt mới. Gửi lại dữ liệu hoặc bổ sung IP dùng cùng visitId nên không tăng lượt.
 - Đơn mới có visitId đã được ghi nhận sẽ lấy link/nguồn từ lượt đó. Sau khi tạo, các lần gửi lại giữ nguyên nguồn, URL, UTM, click ID và mã lượt của đơn, kể cả UTM ban đầu trống. IP/vị trí có thể được bổ sung.
 - Đơn và lượt nối bằng visitId, không dựa vào IP/số điện thoại. Dữ liệu cũ thiếu visitId chỉ nối theo sessionId + đúng URL khi duy nhất một lượt có thể khớp; trường hợp không rõ để trống.
-- Telegram thông báo đơn đã thanh toán về cả -1004413665683 và -5585627393, có mã đơn, mã lượt, mã phiên, URL, nguồn, chiến dịch, giờ tạo/thanh toán/vào trang, IP/vị trí ước lượng và thông tin khách.
+- Telegram thông báo đơn đã thanh toán chỉ về -5585627393, có mã đơn, mã lượt, mã phiên, URL, nguồn, chiến dịch, giờ tạo/thanh toán/vào trang, IP/vị trí ước lượng và thông tin khách.
 - Một mã đơn chỉ có một thông báo mỗi chat. Khi có link cấp sau đó, sửa tin đã gửi; lỗi một chat chỉ thử lại chat đó. Đồng bộ im lặng sync_order không gửi/sửa Telegram hay gửi email.
 - Telegram có giới hạn độ dài nên thông tin quá dài có dấu …; Sheet giữ URL/UTM đầy đủ. Không tự suy ra nguồn/IP/vị trí chưa thu thập được.
+
+Telegram: chỉ gửi về nhóm -5585627393 qua @botbaodongemini_bot. Kiểm tra API ngày 24/10/2026: getChat thành công, bot là thành viên nhóm và nhóm cho phép gửi tin. Chưa gửi tin nhắn thử.
 
 Cập nhật lên hệ thống thật
 
 1. Mở Apps Script đang dùng, thay toàn bộ nội dung bằng GoogleAppsScript_CRM_AutoBot.js rồi lưu.
 2. Deploy → Manage deployments → sửa Web App hiện tại → Version: New version → Deploy. Giữ nguyên URL /exec.
-3. Mở URL /exec thêm ?action=health. Phải thấy: protocolVersion: 2, build: 2026-10-23-visit-orders, columns: 41, trafficColumns: 25.
+3. Mở URL /exec thêm ?action=health. Phải thấy: protocolVersion: 2, build: 2026-10-24-apipay-bidv, columns: 41, trafficColumns: 25.
 4. Trên Vibe Host, mở đúng ứng dụng và bấm Triển khai lại từ main mới nhất. Máy chủ dùng Dockerfile Python tại gốc repo. Công tắc tự triển khai hiện tắt nên Git push chưa tự cập nhật website.
 5. Mở website lại để nhận JavaScript mới. Dùng URL quảng cáo có utm_source=facebook&utm_medium=paid_social; thêm chiến dịch/nhóm/mẫu trong các trường UTM tương ứng. Link sạch không đủ bằng chứng để xác nhận quảng cáo Facebook.
 6. Dùng lượt truy cập và giao dịch hợp lệ tiếp theo để kiểm tra: visitId trong TRUY_CAP = visitId trong DON_HANG = Mã lượt truy cập trong Telegram; URL/nguồn phải giống nhau, mã đơn đã thanh toán chỉ có khi đã thanh toán.

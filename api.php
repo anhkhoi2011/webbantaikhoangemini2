@@ -213,7 +213,11 @@ if (strpos($requestUri, '/api/licenses/auto-claim') !== false && $method === 'PO
 if (strpos($requestUri, '/api/payment-config') !== false) {
     if ($method === 'POST') {
         $body = getPostJson();
-        writeJsonFile('payment_config.json', $body);
+        $current = readJsonFile('payment_config.json', []);
+        foreach (['apiKey','accessKey','secretKey'] as $key) {
+            if (array_key_exists($key, $body) && trim((string)$body[$key]) === '') unset($body[$key]);
+        }
+        writeJsonFile('payment_config.json', array_replace($current, $body));
         echo json_encode(["status" => "success", "message" => "Payment config saved"]);
     } else {
         $cfg = readJsonFile('payment_config.json', []);
@@ -378,7 +382,7 @@ if (strpos($requestUri, '/api/check-payment') !== false) {
         $used = false;
         foreach ($orders as $other) if (($other['orderId'] ?? '') !== $orderId && orderIsPaid($other) && (($other['paymentKey'] ?? '') === $key || ($other['paymentTxId'] ?? '') === ($tx['id'] ?? ''))) { $used = true; break; }
         if ($used) continue;
-        $order['status'] = empty($order['licenseLink']) ? 'Đã thanh toán (Chờ cấp link)' : 'Đã thanh toán (MBBank)';
+        $order['status'] = empty($order['licenseLink']) ? 'Đã thanh toán (Chờ cấp link)' : 'Đã thanh toán (BIDV)';
         $order['paymentTxId'] = $tx['id']; $order['paymentKey'] = $key;
         $order['paymentSource'] = $tx['source'] ?? 'Bank webhook';
         $order['paidAt'] = $tx['time'] ?? date('c');
@@ -398,7 +402,7 @@ if (strpos($requestUri, '/api/simulate-payment') !== false) {
         "id" => "SIM_" . rand(100000, 999999),
         "amount" => intval($body['amount'] ?? 119000),
         "description" => $memo,
-        "bank" => "MBBank",
+        "bank" => "BIDV",
         "time" => date('Y-m-d H:i:s'),
         "source" => "Simulated / Test Admin"
     ];
@@ -413,8 +417,8 @@ if (strpos($requestUri, '/api/simulate-payment') !== false) {
 if (strpos($requestUri, '/api/telegram-notify') !== false) {
     $body = getPostJson();
     $teleCfg = readJsonFile('telegram_config.json', []);
-    $botToken = $teleCfg['botToken'] ?? '8924743387:AAHmuHUEUyK2XtRL4N6dUEbHf98xmj1wE2c';
-    $chatId = $teleCfg['chatId'] ?? '-1004413665683';
+    $botToken = $teleCfg['botToken'] ?? '8941091346:AAF6mygABxGPqjJKg4aEZjYXIp9e2pVcqs4';
+    $chatId = $teleCfg['chatId'] ?? '-5585627393';
     
     $res = @file_get_contents("https://api.telegram.org/bot{$botToken}/sendMessage?" . http_build_query([
         'chat_id' => $chatId,
@@ -430,8 +434,8 @@ if (strpos($requestUri, '/api/telegram-notify') !== false) {
 if (strpos($requestUri, '/api/admin-login-notify') !== false) {
     $body = getPostJson();
     $teleCfg = readJsonFile('telegram_config.json', []);
-    $botToken = $teleCfg['botToken'] ?? '8924743387:AAHmuHUEUyK2XtRL4N6dUEbHf98xmj1wE2c';
-    $chatId = $teleCfg['chatId'] ?? '-1004413665683';
+    $botToken = $teleCfg['botToken'] ?? '8941091346:AAF6mygABxGPqjJKg4aEZjYXIp9e2pVcqs4';
+    $chatId = $teleCfg['chatId'] ?? '-5585627393';
 
     $msg = "🛡️ <b>ĐĂNG NHẬP ADMIN THÀNH CÔNG</b>\n" .
            "Thời gian: " . ($body['time'] ?? date('d/m/Y H:i:s')) . "\n" .
@@ -503,7 +507,7 @@ if (strpos($requestUri, '/api/webhook') !== false) {
                 "id" => isset($it['id']) ? (string)$it['id'] : $key,
                 "amount" => $amt,
                 "description" => $desc,
-                "bank" => isset($it['bank']) ? $it['bank'] : "MBBank",
+                "bank" => isset($it['bank']) ? $it['bank'] : "BIDV",
                 "time" => $it['paidAt'] ?? $it['completedAt'] ?? $it['transactionDateTime'] ?? $it['time'] ?? $it['updatedAt'] ?? date('c'),
                 "source" => "Webhook API Pay"
             ]);
@@ -519,7 +523,7 @@ if (strpos($requestUri, '/api/webhook') !== false) {
             $pending['paymentTxId'] = $tx['id']; $pending['paymentKey'] = $tx['paymentKey'] ?? paymentKey($tx);
             $pending['paidAt'] = $tx['time'] ?? date('c');
             $pending['paymentSource'] = $tx['source'] ?? 'Bank Webhook';
-            $pending['status'] = empty($pending['licenseLink']) ? 'Đã thanh toán (Chờ cấp link)' : 'Đã thanh toán (MBBank)';
+            $pending['status'] = empty($pending['licenseLink']) ? 'Đã thanh toán (Chờ cấp link)' : 'Đã thanh toán (BIDV)';
             try { syncSheetOrder(saveOrder($pending)); } catch (Throwable $error) { error_log('Payment reconciliation: ' . $error->getMessage()); }
             break;
         }

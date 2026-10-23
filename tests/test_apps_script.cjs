@@ -46,20 +46,20 @@ const base={orderId:'#TEST-A',amount:90000,amountRaw:90000,name:'Khách <test>',
  for(let i=0;i<4;i++) assert.equal(e.post({...base,action:'new_order'}).status,'success');
  assert.equal(e.sheets.has('GIAO_DICH'),false,'new_order must never become a raw bank event');
  assert.equal(e.sheets.get('DON_HANG').rows.length,2);
- assert.equal(e.sends.length,2,'one notification per chat');
- assert.deepEqual(e.sends.map(x=>x.chat_id),['-1004413665683','-5585627393']);
+ assert.equal(e.sends.length,1,'one notification per chat');
+ assert.deepEqual(e.sends.map(x=>x.chat_id),['-5585627393']);
  assert.ok(e.sends[0].text.includes('203.0.113.5'));
  assert.ok(e.sends[0].text.includes('Khách &lt;test&gt;'));
  const row=e.sheets.get('DON_HANG').rows[1];
  assert.equal(row[18],'Safari');assert.equal(row[22],'cpc');assert.equal(row[29],'BANK-1');
- e.post({...base,action:'sync_order',name:'Updated'});assert.equal(e.sends.length,2);
+ e.post({...base,action:'sync_order',name:'Updated'});assert.equal(e.sends.length,1);
  e.post({...base,action:'pending_order',status:'Chờ thanh toán'});assert.equal(e.sheets.get('DON_HANG').rows[1][11],base.status,'late pending must not downgrade paid');
 }
 {
  const e=environment();e.fail('-5585627393');
  assert.equal(e.post({...base,action:'new_order'}).notificationsComplete,false);
  e.fail('');assert.equal(e.post({...base,action:'new_order'}).notificationsComplete,true);
- assert.deepEqual(e.sends.map(x=>x.chat_id),['-1004413665683','-5585627393','-5585627393']);
+ assert.deepEqual(e.sends.map(x=>x.chat_id),['-5585627393','-5585627393']);
 }
 {
  const e=environment();
@@ -67,7 +67,7 @@ const base={orderId:'#TEST-A',amount:90000,amountRaw:90000,name:'Khách <test>',
  for(let i=0;i<4;i++) e.post({id:'delivery-'+i,amount:90000,content:'QAMRMQ5816 '+base.memo,status:'COMPLETED',time:'2026-10-23T05:01:00Z'});
  assert.equal(e.sheets.get('GIAO_DICH').rows.length,2,'delivery UUID must not create another transaction');
  assert.equal(e.sheets.get('DON_HANG').rows.length,2);
- assert.equal(e.sends.length,2);
+ assert.equal(e.sends.length,1);
  assert.ok(e.sheets.get('DON_HANG').rows[1][11].startsWith('Đã thanh toán'));
 }
 {
@@ -82,13 +82,13 @@ const base={orderId:'#TEST-A',amount:90000,amountRaw:90000,name:'Khách <test>',
  const e=environment();
  e.post({id:'early-bank',amount:'90000.00',content:base.memo,status:'COMPLETED'});
  e.post({...base,action:'pending_order',status:'Chờ thanh toán',paymentTxId:''});
- assert.equal(e.sends.length,2,'payment before pending_order must reconcile once');
+ assert.equal(e.sends.length,1,'payment before pending_order must reconcile once');
  const before=e.sheets.get('DON_HANG').rows[1][4];
  const result=e.post({...base,action:'new_order',orderId:'#OTHER',paymentTxId:'early-bank',name:'Wrong customer'});
  assert.equal(result.status,'error');assert.equal(e.sheets.get('DON_HANG').rows[1][4],before);
  assert.equal(JSON.parse(e.ctx.doGet({parameter:{action:'health'}}).text).columns,41);
  assert.equal(JSON.parse(e.ctx.doGet({parameter:{action:'health'}}).text).trafficColumns,25);
- assert.equal(JSON.parse(e.ctx.doGet({parameter:{action:'health'}}).text).build,'2026-10-23-visit-orders');
+ assert.equal(JSON.parse(e.ctx.doGet({parameter:{action:'health'}}).text).build,'2026-10-24-apipay-bidv');
  assert.equal(e.ctx.money_(90000.0),90000);assert.equal(e.ctx.money_('90.000đ'),90000);assert.equal(e.ctx.money_('-90000'),-90000);
 }
 {
@@ -136,13 +136,13 @@ const base={orderId:'#TEST-A',amount:90000,amountRaw:90000,name:'Khách <test>',
 {
  const e=environment();
  e.post({...base, action:'new_order'});
- assert.equal(e.sends.length,2);
+ assert.equal(e.sends.length,1);
  assert.equal(e.edits.length,0);
  const issued={...base, action:'new_order', licenseLink:'https://example.invalid/real-issued-link',status:'Đã thanh toán (MBBank)'};
  for(let i=0;i<4;i++) e.post(issued);
- assert.equal(e.sends.length,2,'issuing a link must edit the existing message, not send another order');
- assert.equal(e.edits.length,2,'one successful edit per chat');
- assert.deepEqual(e.edits.map(x=>x.message_id),[1,2]);
+ assert.equal(e.sends.length,1,'issuing a link must edit the existing message, not send another order');
+ assert.equal(e.edits.length,1,'one successful edit per chat');
+ assert.deepEqual(e.edits.map(x=>x.message_id),[1]);
  assert.ok(e.edits.every(x=>x.text.includes('real-issued-link')));
  assert.ok(e.edits.every(x=>!x.text.includes('Chờ cấp link')));
 }
@@ -154,8 +154,8 @@ const base={orderId:'#TEST-A',amount:90000,amountRaw:90000,name:'Khách <test>',
  assert.equal(e.post(issued).notificationsComplete,false);
  e.fail('');
  assert.equal(e.post(issued).notificationsComplete,true);
- assert.equal(e.sends.length,2,'an edit retry must never create a duplicate order notification');
- assert.deepEqual(e.edits.map(x=>x.chat_id),['-1004413665683','-5585627393','-5585627393']);
+ assert.equal(e.sends.length,1,'an edit retry must never create a duplicate order notification');
+ assert.deepEqual(e.edits.map(x=>x.chat_id),['-5585627393','-5585627393']);
 }
 {
  const e=environment();
@@ -196,4 +196,4 @@ const base={orderId:'#TEST-A',amount:90000,amountRaw:90000,name:'Khách <test>',
  e.post({...base,action:'new_order',sessionId:'LEGACY'});
  assert.ok(e.sheets.get('TRUY_CAP').rows.slice(1).every(row=>!row[20]),'ambiguous legacy visits must not get guessed order IDs');
 }
-console.log('PASS Apps Script: routing, four retries, changed UUID, row upsert, tracking, two chats, partial failure retry, late pending, unmatched/debit/pending events');
+console.log('PASS Apps Script: routing, four retries, changed UUID, row upsert, tracking, one chat, failed send/edit retry, late pending, unmatched/debit/pending events');

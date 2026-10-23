@@ -19,11 +19,11 @@ const BOT_CONFIG = {
   SPREADSHEET_URL: "https://docs.google.com/spreadsheets/d/17JXfu0NcYQ2sJ9AQn8ZR-gOIYDQBgTquT4bu9pM6QrE/edit?gid=0#gid=0",
 
   // Token Bot Telegram thông báo đơn hàng:
-  TELEGRAM_BOT_TOKEN: "8924743387:AAHmuHUEUyK2XtRL4N6dUEbHf98xmj1wE2c", 
+  TELEGRAM_BOT_TOKEN: "8941091346:AAF6mygABxGPqjJKg4aEZjYXIp9e2pVcqs4",
   
   // ID Nhóm chat Telegram nhận thông báo:
-  TELEGRAM_CHAT_ID: "-1004413665683",
-  TELEGRAM_CHAT_IDS: ["-1004413665683", "-5585627393"],
+  TELEGRAM_CHAT_ID: "-5585627393",
+  TELEGRAM_CHAT_IDS: ["-5585627393"],
 
   // Tên thương hiệu hiển thị trong email:
   BRAND_NAME: "TRẠM CÔNG NGHỆ - Gemini Pro",
@@ -32,8 +32,8 @@ const BOT_CONFIG = {
 };
 
 // API Pay fallback cho website tĩnh: không cần PHP/Python trên hosting.
-const APIPAY_ACCESS_KEY = "5a03a2c11ed56ea65b7e7e11107f638ec8acfb95165a6a50225c91a477a157c2";
-const APIPAY_SECRET_KEY = "LK00NYGOmyz8i7MhhNOD/gz0YcMBjUS4+DfD/l1zXmKcKXo1v5ScvycSlu8DcngsKUSLWJzF+fS+eysDi0B3gQ==";
+const APIPAY_ACCESS_KEY = "f316555d35e27b97ec26d5696298410a8fb02678317953c910cd3174225d052a";
+const APIPAY_SECRET_KEY = "n8YnRXUY98MgtOB+Y+MDhIJY5AXhwbzae3+9KuGi/46Ac1nJ4+dgYonFykg60dRj61iTFaNAQUCKaPgO+W7epw==";
 
 function jsonOutput_(value) {
   return ContentService.createTextOutput(JSON.stringify(value)).setMimeType(ContentService.MimeType.JSON);
@@ -41,7 +41,7 @@ function jsonOutput_(value) {
 
 function doGet(e) {
   const action = (e && e.parameter && e.parameter.action) || "health";
-  if (action !== "check_payment") return jsonOutput_({ status: "success", service: "Gemini CRM Apps Script", protocolVersion: 2, columns: ORDER_COLUMNS.length, trafficColumns: VISIT_COLUMNS.length, build: "2026-10-23-visit-orders" });
+  if (action !== "check_payment") return jsonOutput_({ status: "success", service: "Gemini CRM Apps Script", protocolVersion: 2, columns: ORDER_COLUMNS.length, trafficColumns: VISIT_COLUMNS.length, build: "2026-10-24-apipay-bidv" });
 
   const memo = String((e.parameter && e.parameter.memo) || "").replace(/\s+/g, "").toUpperCase();
   const orderId = String(e.parameter.orderId || "");
@@ -281,7 +281,7 @@ function doPost(e) {
           order.paymentSource = "APIPay Webhook";
           order.amountRaw = amount;
           order.amount = amount;
-          order.status = order.licenseLink ? "Đã thanh toán (MBBank)" : "Đã thanh toán (Chờ cấp link)";
+          order.status = order.licenseLink ? "Đã thanh toán (BIDV)" : "Đã thanh toán (Chờ cấp link)";
           upsertOrder_(ss, order, true);
         }
       }
@@ -442,7 +442,7 @@ function upsertOrder_(ss, data, notify) {
         order.paymentTxId = tx.row[0]; order.paymentKey = tx.row[6]; order.paidAt = tx.row[4];
         order.amountRaw = money_(tx.row[1]); order.amount = order.amountRaw;
         order.paymentSource = "APIPay Webhook";
-        order.status = order.licenseLink ? "Đã thanh toán (MBBank)" : "Đã thanh toán (Chờ cấp link)";
+        order.status = order.licenseLink ? "Đã thanh toán (BIDV)" : "Đã thanh toán (Chờ cấp link)";
         txSheet.getRange(tx.number, 8).setValue(order.orderId);
         return upsertOrder_(ss, order, true);
       }
@@ -533,7 +533,7 @@ function sendInvoiceEmail(name, email, phone, orderId, link) {
       <div style="padding: 24px;">
         <p style="font-size: 14px; color: #334155; margin-top: 0;">Xin chào <strong>${name}</strong>,</p>
         <p style="font-size: 13px; color: #475569; line-height: 1.6;">
-          Hệ thống API Pay & Ngân hàng MBBank đã ghi nhận thành công giao dịch <strong>119.000 VNĐ</strong> của bạn.
+          Hệ thống API Pay & Ngân hàng BIDV đã ghi nhận thành công giao dịch <strong>119.000 VNĐ</strong> của bạn.
         </p>
 
         <div style="background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 8px; padding: 16px; margin: 20px 0; text-align: center;">
@@ -616,7 +616,7 @@ function testAppendSampleOrder() {
         licenseLink: "https://one.google.com/promo/gemini-pro/ACT-TEST-VIP99",
         referrer: "Facebook Ads",
         ipLocation: "113.161.42.18 (TP. Hồ Chí Minh)",
-        status: "Đã thanh toán (MBBank)"
+        status: "Đã thanh toán (BIDV)"
       })
     }
   };

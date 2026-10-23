@@ -52,6 +52,33 @@ class PaymentFlowTests(unittest.TestCase):
         self.assertEqual(len(server.read_json_file("bank_transactions.json", [])), 1)
         self.post("/api/orders", self.order)
         self.assertTrue(server.is_paid_order(server.read_json_file("orders.json", [])[0]))
+    def test_public_config_and_pricing_save_preserve_server_credentials(self):
+        config = {"packagePrice": 90000, "accessKey": "server-access", "apiKey": "server-access",
+                  "secretKey": "server-secret", "bankCode": "BIDV", "bankBin": "970418",
+                  "paymentIntegrationVersion": "2026-10-24-apipay-bidv"}
+        server.write_json_file("payment_config.json", config)
+        with urlopen(f"http://127.0.0.1:{self.http.server_port}/api/payment-config", timeout=5) as response:
+            public = json.load(response)
+        self.assertEqual(public["bankCode"], "BIDV")
+        self.assertEqual(public["paymentIntegrationVersion"], config["paymentIntegrationVersion"])
+        for key in ("accessKey", "apiKey", "secretKey"):
+            self.assertNotIn(key, public)
+        with patch.dict(server.ADMIN_TOKENS, {"test-config-token": server.datetime.now().timestamp() + 60}):
+            self.post("/api/payment-config", {"packagePrice": 119000, "apiKey": "", "accessKey": None, "secretKey": " "},
+                      {"X-Admin-Token": "test-config-token"})
+        saved = server.read_json_file("payment_config.json", {})
+        self.assertEqual(saved["packagePrice"], 119000)
+        for key in ("accessKey", "apiKey", "secretKey"):
+            self.assertEqual(saved[key], config[key])
+
+    def test_fallback_qr_preserves_svg_content_type(self):
+        import base64
+        svg = b'<svg xmlns="http://www.w3.org/2000/svg"><title>BIDV V1T61023152838</title></svg>'
+        Path(self.temp.name, "default_qr.txt").write_text("data:image/svg+xml;base64," + base64.b64encode(svg).decode())
+        with urlopen(f"http://127.0.0.1:{self.http.server_port}/api/qr-image", timeout=5) as response:
+            self.assertEqual(response.headers.get_content_type(), "image/svg+xml")
+            self.assertEqual(response.read(), svg)
+
     def test_amount_parsing(self):
         for value in (90000, 90000.0, "90000.00", "90000.0", "90.000đ"):
             self.assertEqual(server.parse_money(value), 90000)

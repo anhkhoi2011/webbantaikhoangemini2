@@ -367,7 +367,7 @@ def mark_order_paid(order_id, tx_id=None, tx_data=None, source="API Pay"):
                     free.update(status="Đã cấp", assignedTo=f"{order.get('name')} ({order_id})")
                     write_json_file(LICENSES_FILE, lics)
                     order["licenseLink"] = free["link"]
-        order["status"] = "Đã thanh toán (MBBank)" if order.get("licenseLink") else "Đã thanh toán (Chờ cấp link)"
+        order["status"] = "Đã thanh toán (BIDV)" if order.get("licenseLink") else "Đã thanh toán (Chờ cấp link)"
         if order.get("couponCode") and not order.get("couponCounted"):
             with COUPONS_LOCK:
                 coupons = read_json_file(COUPONS_FILE, [])
@@ -449,7 +449,7 @@ class GeminiCRMHandler(SimpleHTTPRequestHandler):
         # 1. API: Cấu hình cổng thanh toán
         if path == "/api/payment-config":
             cfg = read_json_file("payment_config.json", {})
-            public_keys = {"packagePrice", "originalPrice", "nextPrice", "packageName", "provider", "bankPublicId", "vaNumber", "accountNo", "physicalAccountNo", "bankBin", "accountName", "pollIntervalSeconds", "testMode", "enabled", "pixelId", "pixelEnabled"}
+            public_keys = {"packagePrice", "originalPrice", "nextPrice", "packageName", "provider", "bankPublicId", "vaNumber", "accountNo", "physicalAccountNo", "bankBin", "accountName", "pollIntervalSeconds", "testMode", "enabled", "pixelId", "pixelEnabled", "bankCode", "paymentIntegrationVersion"}
             return self.send_json({k: v for k, v in cfg.items() if k in public_keys})
 
         # 1.1 API: Cấu hình Meta Pixel (Facebook Ads)
@@ -669,10 +669,15 @@ class GeminiCRMHandler(SimpleHTTPRequestHandler):
             qr_file = os.path.join(BASE_DIR, "default_qr.txt")
             if os.path.exists(qr_file):
                 with open(qr_file, "r", encoding="utf-8") as f:
-                    raw_b64 = f.read().replace("data:image/png;base64,", "").strip()
+                    image_uri = f.read().strip()
+                mime_type = "image/png"
+                raw_b64 = image_uri
+                if image_uri.startswith("data:"):
+                    metadata, raw_b64 = image_uri.split(",", 1)
+                    mime_type = metadata[5:].split(";", 1)[0]
                 img_data = base64.b64decode(raw_b64)
                 self.send_response(200)
-                self.send_header("Content-Type", "image/png")
+                self.send_header("Content-Type", mime_type)
                 self.send_header("Content-Length", str(len(img_data)))
                 self.end_headers()
                 self.wfile.write(img_data)
@@ -974,6 +979,9 @@ class GeminiCRMHandler(SimpleHTTPRequestHandler):
         # 1. API: Lưu cấu hình cổng thanh toán & giá bán gói
         if path == "/api/payment-config":
             current_cfg = read_json_file("payment_config.json", {})
+            for key in ("apiKey", "accessKey", "secretKey"):
+                if key in body and not str(body[key] or "").strip():
+                    body.pop(key)
             current_cfg.update(body)
             write_json_file("payment_config.json", current_cfg)
             return self.send_json({"status": "success", "message": "Payment and pricing config saved", "config": current_cfg})
@@ -1233,7 +1241,7 @@ class GeminiCRMHandler(SimpleHTTPRequestHandler):
             queue_order_sync(order_id)
             return self.send_json({"status": "success", "orderId": order_id, "order": merged, "sheetSync": "queued"})
 
-        # API: Nhận Webhook từ APIPay / Casso / SeAPay / MBBank
+        # API: Nhận Webhook từ APIPay / Casso / SeAPay / BIDV
         if path == "/api/webhook":
             webhook_secret = os.environ.get("WEBHOOK_SECRET", "")
             supplied_secret = self.headers.get("X-Webhook-Secret", "") or str((body.get("webhookSecret") if isinstance(body, dict) else "") or "")
@@ -1285,7 +1293,7 @@ class GeminiCRMHandler(SimpleHTTPRequestHandler):
                         "id": str(it.get("id") or it.get("publicId") or f"TX_{int(datetime.now().timestamp()) % 1000000:06d}"),
                         "amount": actual_amt,
                         "description": desc or f"PRO18T (APIPay {public_id})",
-                        "bank": it.get("bank") or it.get("bankCode") or "MBBank",
+                        "bank": it.get("bank") or it.get("bankCode") or "BIDV",
                         "time": it.get("paidAt") or it.get("completedAt") or it.get("transactionDateTime") or it.get("time") or it.get("updatedAt") or it.get("createdAt") or datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                         "source": "APIPay Webhook"
                     }
@@ -1332,7 +1340,7 @@ class GeminiCRMHandler(SimpleHTTPRequestHandler):
                 "id": f"SIM_{int(datetime.now().timestamp()) % 1000000:06d}",
                 "amount": amount,
                 "description": memo,
-                "bank": "MBBank",
+                "bank": "BIDV",
                 "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 "source": "Simulated / Test Admin"
             }

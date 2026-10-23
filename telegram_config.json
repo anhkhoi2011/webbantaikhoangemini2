@@ -1,11 +1,11 @@
 {
-  "botToken": "8924743387:AAHmuHUEUyK2XtRL4N6dUEbHf98xmj1wE2c",
-  "chatId": "-1004413665683",
+  "botToken": "8941091346:AAF6mygABxGPqjJKg4aEZjYXIp9e2pVcqs4",
+  "chatId": "-5585627393",
   "lowStockThreshold": 5,
   "dailyReportTime": "10:00",
   "enabled": true,
   "chatIds": [
-    "-1004413665683",
     "-5585627393"
-  ]
+  ],
+  "telegramBotVersion": "8941091346"
 }
