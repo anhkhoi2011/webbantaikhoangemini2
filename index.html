@@ -1581,11 +1581,18 @@
     }
 
     // Cấu hình ngân hàng thanh toán VietQR (Tự động đồng bộ từ CRM Cấu hình giá)
-    const CONFIG = {
-      bankBin: "970422", // MBBank
-      accountNo: "517041996", // Số tài khoản thật dùng để dựng mã VietQR MBBank
+    const PAYMENT_IDENTITY = Object.freeze({
+      bankBin: "970422",
+      accountNo: "517041996",
       physicalAccountNo: "517041996",
-      accountName: "NGUYEN TRAN HAN",
+      accountName: "NGUYEN TRAN HAN"
+    });
+
+    const CONFIG = {
+      bankBin: PAYMENT_IDENTITY.bankBin, // MBBank
+      accountNo: PAYMENT_IDENTITY.accountNo, // Số tài khoản thật dùng để dựng mã VietQR MBBank
+      physicalAccountNo: PAYMENT_IDENTITY.physicalAccountNo,
+      accountName: PAYMENT_IDENTITY.accountName,
       amount: 119000,
       packageName: "Gemini Pro 18 Tháng (5TB Cloud)",
       originalPrice: 8802000,
@@ -1617,6 +1624,16 @@
       if (status) status.textContent = 'Xem video hướng dẫn mua hàng, thanh toán và nhận link kích hoạt. Bạn có thể bật toàn màn để theo dõi rõ hơn.';
     }
 
+    function enforcePaymentIdentity() {
+      // Payment identity is owned by this deployment. Never let an old localStorage
+      // snapshot or a third-party QR response put the previous account back on web2.
+      const identity = typeof PAYMENT_IDENTITY !== 'undefined' ? PAYMENT_IDENTITY : { bankBin: '970422', accountNo: '517041996', physicalAccountNo: '517041996', accountName: 'NGUYEN TRAN HAN' };
+      CONFIG.bankBin = identity.bankBin;
+      CONFIG.accountNo = identity.accountNo;
+      CONFIG.physicalAccountNo = identity.physicalAccountNo;
+      CONFIG.accountName = identity.accountName;
+    }
+
     // Đọc ngay cấu hình giá lưu trong cache để tránh chớp giật giao diện (zero-flicker)
     try {
       const _cachedPricing = JSON.parse(localStorage.getItem('crm_payment_config') || localStorage.getItem('crm_payment_api_config') || '{}');
@@ -1625,6 +1642,7 @@
       if (_cachedPricing.originalPrice) CONFIG.originalPrice = Number(_cachedPricing.originalPrice);
       if (_cachedPricing.nextPrice) CONFIG.nextPrice = Number(_cachedPricing.nextPrice);
     } catch(e) {}
+    enforcePaymentIdentity();
 
     // ==========================================
     // META PIXEL (FACEBOOK ADS) TRACKING ENGINE
@@ -2092,14 +2110,12 @@
             currentOrder.apipayPublicId = data.publicId;
             localStorage.setItem('crm_pending_order', JSON.stringify(currentOrder));
             syncCustomerOrder(Object.assign({}, currentOrder));
-            if (data.accountNumber) {
-              const stkDisp = document.getElementById('modalStkDisplay');
-              if (stkDisp) stkDisp.innerText = data.accountNumber;
-            }
-            if (data.qrUrl) {
-              const liveQrImg = document.getElementById('modalQrImage');
-              if (liveQrImg) liveQrImg.src = data.qrUrl;
-            }
+            // Keep the QR and account identity generated above from this deployment.
+            // ApiPay may return a cached/legacy qrUrl or account label; it is only used
+            // here to create and poll the payment request, never to replace web2's MBBank QR.
+            enforcePaymentIdentity();
+            const stkDisp = document.getElementById('modalStkDisplay');
+            if (stkDisp) stkDisp.innerText = PAYMENT_IDENTITY.accountNo;
           }
         }).catch(err => console.warn('apipay-create error:', err));
       } catch(e) {}
@@ -2161,6 +2177,11 @@
             }
             for (const key of ['apiKey', 'accessKey', 'secretKey', 'telegramChatId', 'telegramChatIds']) delete parsed[key];
             const cfg = Object.assign(defaultCfg, parsed);
+            const identity = typeof PAYMENT_IDENTITY !== 'undefined' ? PAYMENT_IDENTITY : { bankBin: '970422', accountNo: '517041996', physicalAccountNo: '517041996', accountName: 'NGUYEN TRAN HAN' };
+            cfg.bankBin = identity.bankBin;
+            cfg.accountNo = identity.accountNo;
+            cfg.physicalAccountNo = identity.physicalAccountNo;
+            cfg.accountName = identity.accountName;
             localStorage.setItem('crm_payment_api_config', JSON.stringify(cfg));
             return cfg;
           }
@@ -3035,11 +3056,7 @@
       CONFIG.originalPrice = originalPrice;
       CONFIG.nextPrice = nextPrice;
       CONFIG.packageName = packageName;
-      for (const key of ['bankBin', 'accountNo', 'physicalAccountNo', 'accountName']) {
-        if (cfg[key]) CONFIG[key] = cfg[key];
-      }
-      if (cfg.accountNo) CONFIG.accountNo = cfg.accountNo;
-
+      enforcePaymentIdentity();
       currentOrderAmount = packagePrice;
 
       const priceStr = formatVnd(packagePrice);

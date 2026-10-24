@@ -39,6 +39,17 @@ def load_config():
                 cfg.update(saved)
         except Exception:
             pass
+    # The payment account is fixed for web2. A stale server-side JSON must not
+    # resurrect the previous account after deployment.
+    cfg.update({
+        'bankPublicId': 'cmv2nmvn408tb01mny26u27ie',
+        'accountNo': '517041996',
+        'physicalAccountNo': '517041996',
+        'vaNumber': 'VQRQAMRMQ5816',
+        'bankCode': 'MB',
+        'bankBin': '970422',
+        'accountName': 'NGUYEN TRAN HAN'
+    })
     return cfg
 
 def get_headers(access_key, secret_key):
@@ -93,10 +104,12 @@ def create_payment_request(phone, amount=None, memo=None):
                 "status": "success",
                 "publicId": pr_data.get("publicId"),
                 "payUrl": pr_data.get("payUrl"),
-                "qrUrl": pr_data.get("qrUrl"),
-                "accountNumber": pr_data.get("accountNumber", cfg["accountNo"]),
-                "accountName": pr_data.get("accountName", cfg["accountName"]),
-                "bankCode": pr_data.get("bankCode", cfg.get("bankCode", "MB")),
+                # The browser renders the canonical VietQR from CONFIG. Do not
+                # pass a legacy ApiPay QR or account label back to web2.
+                "qrUrl": None,
+                "accountNumber": cfg["accountNo"],
+                "accountName": cfg["accountName"],
+                "bankCode": cfg.get("bankCode", "MB"),
                 "amount": pr_data.get("amount", amount),
                 "content": memo
             }
