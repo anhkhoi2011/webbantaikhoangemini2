@@ -2,7 +2,7 @@
 """
 ApiPay Bridge Module for Google Gemini Pro CRM
 Author: CRM Team
-Description: Connects to app.apipay.vn API for BIDV Auto-Detection using AccessKey & SecretKey
+Description: Connects to app.apipay.vn API for MBBank Auto-Detection using AccessKey & SecretKey
 """
 
 import sys
@@ -22,15 +22,15 @@ DEFAULT_CONFIG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "
 
 def load_config():
     cfg = {
-        "accessKey": "f316555d35e27b97ec26d5696298410a8fb02678317953c910cd3174225d052a",
-        "secretKey": "n8YnRXUY98MgtOB+Y+MDhIJY5AXhwbzae3+9KuGi/46Ac1nJ4+dgYonFykg60dRj61iTFaNAQUCKaPgO+W7epw==",
-        "bankPublicId": "cmvkpk77d128c01p4f27u9qy5",
-        "accountNo": "V1T61023152838",
-        "physicalAccountNo": "8809642706",
-        "vaNumber": "V1T61023152838",
-        "bankCode": "BIDV",
-        "bankBin": "970418",
-        "accountName": "NGO ANH KHOI"
+        "accessKey": "5a03a2c11ed56ea65b7e7e11107f638ec8acfb95165a6a50225c91a477a157c2",
+        "secretKey": "LK00NYGOmyz8i7MhhNOD/gz0YcMBjUS4+DfD/l1zXmKcKXo1v5ScvycSlu8DcngsKUSLWJzF+fS+eysDi0B3gQ==",
+        "bankPublicId": "cmv2nmvn408tb01mny26u27ie",
+        "accountNo": "517041996",
+        "physicalAccountNo": "517041996",
+        "vaNumber": "VQRQAMRMQ5816",
+        "bankCode": "MB",
+        "bankBin": "970422",
+        "accountName": "NGUYEN TRAN HAN"
     }
     if os.path.exists(DEFAULT_CONFIG_PATH):
         try:
@@ -78,7 +78,7 @@ def create_payment_request(phone, amount=None, memo=None):
         memo = f"PRO18T {phone}"
     headers = get_headers(cfg["accessKey"], cfg["secretKey"])
     url = "https://app.apipay.vn/v1/client/payment-requests"
-    bank_id = cfg.get("bankPublicId", "cmvkpk77d128c01p4f27u9qy5")
+    bank_id = cfg.get("bankPublicId", "cmv2nmvn408tb01mny26u27ie")
     payload = {
         "bankPublicId": bank_id,
         "amount": int(amount),
@@ -96,7 +96,7 @@ def create_payment_request(phone, amount=None, memo=None):
                 "qrUrl": pr_data.get("qrUrl"),
                 "accountNumber": pr_data.get("accountNumber", cfg["accountNo"]),
                 "accountName": pr_data.get("accountName", cfg["accountName"]),
-                "bankCode": pr_data.get("bankCode", cfg.get("bankCode", "BIDV")),
+                "bankCode": pr_data.get("bankCode", cfg.get("bankCode", "MB")),
                 "amount": pr_data.get("amount", amount),
                 "content": memo
             }
@@ -195,9 +195,9 @@ def get_qr_base64(memo="PRO18T", amount=None):
     cfg = load_config()
     if amount is None or amount <= 0:
         amount = cfg.get("packagePrice", 119000)
-    bank_bin = cfg.get("bankBin", "970418")
-    acc_no = cfg.get("vaNumber", cfg.get("accountNo", "V1T61023152838"))
-    acc_name = cfg.get("accountName", "NGO ANH KHOI")
+    bank_bin = cfg.get("bankBin", "970422")
+    acc_no = cfg.get("accountNo", "517041996")
+    acc_name = cfg.get("accountName", "NGUYEN TRAN HAN")
     import urllib.parse
     url = f"https://img.vietqr.io/image/{bank_bin}-{acc_no}-compact2.png?amount={amount}&addInfo={urllib.parse.quote(memo)}&accountName={urllib.parse.quote(acc_name)}"
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})

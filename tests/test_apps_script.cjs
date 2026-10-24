@@ -88,7 +88,7 @@ const base={orderId:'#TEST-A',amount:90000,amountRaw:90000,name:'Khách <test>',
  assert.equal(result.status,'error');assert.equal(e.sheets.get('DON_HANG').rows[1][4],before);
  assert.equal(JSON.parse(e.ctx.doGet({parameter:{action:'health'}}).text).columns,41);
  assert.equal(JSON.parse(e.ctx.doGet({parameter:{action:'health'}}).text).trafficColumns,25);
- assert.equal(JSON.parse(e.ctx.doGet({parameter:{action:'health'}}).text).build,'2026-10-24-apipay-bidv');
+ assert.equal(JSON.parse(e.ctx.doGet({parameter:{action:'health'}}).text).build,'2026-10-24-apipay-mbbank');
  assert.equal(e.ctx.money_(90000.0),90000);assert.equal(e.ctx.money_('90.000đ'),90000);assert.equal(e.ctx.money_('-90000'),-90000);
 }
 {

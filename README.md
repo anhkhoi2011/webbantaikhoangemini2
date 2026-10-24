@@ -1,21 +1,21 @@
 # 🚀 Hệ Thống Bán Tài Khoản Google Gemini Pro 18 Tháng Tự Động & CRM Doanh Nghiệp
 
-Hệ thống bán hàng trực tuyến và Quản trị khách hàng (CRM) trọn gói, tích hợp cổng thanh toán **API Pay (BIDV VietQR Auto-Detect 0.0s)**, tự động đồng bộ **Google Sheets 12 cột chuẩn**, gửi hóa đơn tự động qua **Gmail SMTP**, và thông báo tức thì về nhóm **Telegram Bot**.
+Hệ thống bán hàng trực tuyến và Quản trị khách hàng (CRM) trọn gói, tích hợp cổng thanh toán **API Pay (MBBank VietQR Auto-Detect 0.0s)**, tự động đồng bộ **Google Sheets 12 cột chuẩn**, gửi hóa đơn tự động qua **Gmail SMTP**, và thông báo tức thì về nhóm **Telegram Bot**.
 
 ---
 
 ## 🌟 Tính Năng Nổi Bật
 
-- ⚡ **Thanh Toán Tự Động 100% Qua VietQR BIDV**:
+- ⚡ **Thanh Toán Tự Động 100% Qua VietQR MBBank**:
   - Tự động tạo mã QR động đúng số tiền và cú pháp `PRO18T {SĐT}`.
-  - Tự động quét và nhận diện biến động số dư tài khoản BIDV trong 0.0s - 1.5s.
+  - Tự động quét và nhận diện biến động số dư tài khoản MBBank trong 0.0s - 1.5s.
   - Khách quét tiền xong là modal tự động nhảy ngay sang bước kích hoạt license.
 - 📊 **Quản Trị CRM Đầy Đủ (Admin Dashboard)**:
   - **Bảo mật**: Đăng nhập bằng mã bảo mật, tự động bắn cảnh báo IP & thiết bị về Telegram khi Admin đăng nhập.
   - **Quản lý đơn hàng**: Xem chi tiết, gắn nhãn ghi chú, trạng thái đơn, lọc theo ngày.
   - **Quản lý kho License**: Cấp phát tự động, nạp thêm mã hàng loạt, cảnh báo khi tồn kho thấp.
   - **Theo dõi Traffic Real-time**: Bắt IP thật, vị trí địa lý, trình duyệt và phân loại 7 kênh nguồn (Facebook Ads, TikTok, Google Search, Zalo Chat...).
-  - **Nhật ký biến động số dư ngân hàng**: Xem luồng tiền vào BIDV theo thời gian thực.
+  - **Nhật ký biến động số dư ngân hàng**: Xem luồng tiền vào MBBank theo thời gian thực.
 - 📈 **Đồng Bộ Dữ Liệu Google Sheets (Chuẩn 12 Cột)**:
   - Tự động ghi nhận mọi đơn hàng vào Google Sheet với đầy đủ 12 cột: `Ngày Giờ`, `Mã Đơn`, `Sản Phẩm`, `Giá Tiền`, `Họ Tên`, `Số Điện Thoại (giữ nguyên số 0)`, `Gmail`, `Nội Dung CK`, `Link Bản Quyền`, `Nguồn Khách`, `IP & Vị Trí`, `Trạng Thái`.
   - Tự động tạo dòng tiêu đề màu xanh đen Dark Navy `#0f172a` nếu trang tính chưa có.
@@ -37,7 +37,7 @@ webbantaikhoangemini/
 ├── admin.html                       # Bảng điều khiển CRM Quản trị viên
 ├── server.ps1                       # Backend HTTP Server (REST API trên cổng 8080)
 ├── START_SERVER.bat                 # Khởi động nhanh Server chỉ với 1 click
-├── apipay_bridge.py                 # Module kết nối API Pay BIDV Cloud
+├── apipay_bridge.py                 # Module kết nối API Pay MBBank Cloud
 ├── telegram_sender.py               # Module gửi thông báo Telegram chuẩn UTF-8
 ├── mailer.py                        # Module gửi Email hóa đơn qua Gmail SMTP
 ├── GoogleAppsScript_CRM_AutoBot.js  # Mã nguồn Google Apps Script đồng bộ Sheet & Bot
@@ -114,5 +114,5 @@ Chỉnh sửa trong [telegram_config.json](file:///c:/Users/Admin/Desktop/GI%C3%
 ## 🔒 Bảo Mật & Bản Quyền
 
 - Bản quyền thuộc về **Gemini Pro Enterprise Vietnam**.
-- Hotline / Zalo hỗ trợ: `0567.960.777`.
+- Hotline / Zalo hỗ trợ: `0357.811.242`.
 - Chính sách bảo hành: `30 Ngày (Cam kết 1 đổi 1)`.

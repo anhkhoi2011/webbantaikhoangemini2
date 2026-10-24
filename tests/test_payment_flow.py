@@ -54,12 +54,12 @@ class PaymentFlowTests(unittest.TestCase):
         self.assertTrue(server.is_paid_order(server.read_json_file("orders.json", [])[0]))
     def test_public_config_and_pricing_save_preserve_server_credentials(self):
         config = {"packagePrice": 90000, "accessKey": "server-access", "apiKey": "server-access",
-                  "secretKey": "server-secret", "bankCode": "BIDV", "bankBin": "970418",
-                  "paymentIntegrationVersion": "2026-10-24-apipay-bidv"}
+                  "secretKey": "server-secret", "bankCode": "MBBank", "bankBin": "970422",
+                  "paymentIntegrationVersion": "2026-10-24-apipay-mbbank"}
         server.write_json_file("payment_config.json", config)
         with urlopen(f"http://127.0.0.1:{self.http.server_port}/api/payment-config", timeout=5) as response:
             public = json.load(response)
-        self.assertEqual(public["bankCode"], "BIDV")
+        self.assertEqual(public["bankCode"], "MBBank")
         self.assertEqual(public["paymentIntegrationVersion"], config["paymentIntegrationVersion"])
         for key in ("accessKey", "apiKey", "secretKey"):
             self.assertNotIn(key, public)
@@ -73,7 +73,7 @@ class PaymentFlowTests(unittest.TestCase):
 
     def test_fallback_qr_preserves_svg_content_type(self):
         import base64
-        svg = b'<svg xmlns="http://www.w3.org/2000/svg"><title>BIDV V1T61023152838</title></svg>'
+        svg = b'<svg xmlns="http://www.w3.org/2000/svg"><title>MBBank 517041996</title></svg>'
         Path(self.temp.name, "default_qr.txt").write_text("data:image/svg+xml;base64," + base64.b64encode(svg).decode())
         with urlopen(f"http://127.0.0.1:{self.http.server_port}/api/qr-image", timeout=5) as response:
             self.assertEqual(response.headers.get_content_type(), "image/svg+xml")

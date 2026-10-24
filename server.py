@@ -367,7 +367,7 @@ def mark_order_paid(order_id, tx_id=None, tx_data=None, source="API Pay"):
                     free.update(status="Đã cấp", assignedTo=f"{order.get('name')} ({order_id})")
                     write_json_file(LICENSES_FILE, lics)
                     order["licenseLink"] = free["link"]
-        order["status"] = "Đã thanh toán (BIDV)" if order.get("licenseLink") else "Đã thanh toán (Chờ cấp link)"
+        order["status"] = "Đã thanh toán (MBBank)" if order.get("licenseLink") else "Đã thanh toán (Chờ cấp link)"
         if order.get("couponCode") and not order.get("couponCounted"):
             with COUPONS_LOCK:
                 coupons = read_json_file(COUPONS_FILE, [])
@@ -1241,7 +1241,7 @@ class GeminiCRMHandler(SimpleHTTPRequestHandler):
             queue_order_sync(order_id)
             return self.send_json({"status": "success", "orderId": order_id, "order": merged, "sheetSync": "queued"})
 
-        # API: Nhận Webhook từ APIPay / Casso / SeAPay / BIDV
+        # API: Nhận Webhook từ APIPay / Casso / SeAPay / MBBank
         if path == "/api/webhook":
             webhook_secret = os.environ.get("WEBHOOK_SECRET", "")
             supplied_secret = self.headers.get("X-Webhook-Secret", "") or str((body.get("webhookSecret") if isinstance(body, dict) else "") or "")
@@ -1293,7 +1293,7 @@ class GeminiCRMHandler(SimpleHTTPRequestHandler):
                         "id": str(it.get("id") or it.get("publicId") or f"TX_{int(datetime.now().timestamp()) % 1000000:06d}"),
                         "amount": actual_amt,
                         "description": desc or f"PRO18T (APIPay {public_id})",
-                        "bank": it.get("bank") or it.get("bankCode") or "BIDV",
+                        "bank": it.get("bank") or it.get("bankCode") or "MBBank",
                         "time": it.get("paidAt") or it.get("completedAt") or it.get("transactionDateTime") or it.get("time") or it.get("updatedAt") or it.get("createdAt") or datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                         "source": "APIPay Webhook"
                     }
@@ -1340,7 +1340,7 @@ class GeminiCRMHandler(SimpleHTTPRequestHandler):
                 "id": f"SIM_{int(datetime.now().timestamp()) % 1000000:06d}",
                 "amount": amount,
                 "description": memo,
-                "bank": "BIDV",
+                "bank": "MBBank",
                 "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 "source": "Simulated / Test Admin"
             }

@@ -4,15 +4,15 @@
   "nextPrice": 129000,
   "packageName": "Gemini Pro 18 Tháng (5TB Cloud)",
   "provider": "apipay",
-  "accessKey": "f316555d35e27b97ec26d5696298410a8fb02678317953c910cd3174225d052a",
-  "secretKey": "n8YnRXUY98MgtOB+Y+MDhIJY5AXhwbzae3+9KuGi/46Ac1nJ4+dgYonFykg60dRj61iTFaNAQUCKaPgO+W7epw==",
-  "apiKey": "f316555d35e27b97ec26d5696298410a8fb02678317953c910cd3174225d052a",
-  "bankPublicId": "cmvkpk77d128c01p4f27u9qy5",
-  "vaNumber": "V1T61023152838",
-  "accountNo": "V1T61023152838",
-  "physicalAccountNo": "8809642706",
-  "bankBin": "970418",
-  "accountName": "NGO ANH KHOI",
+  "accessKey": "5a03a2c11ed56ea65b7e7e11107f638ec8acfb95165a6a50225c91a477a157c2",
+  "secretKey": "LK00NYGOmyz8i7MhhNOD/gz0YcMBjUS4+DfD/l1zXmKcKXo1v5ScvycSlu8DcngsKUSLWJzF+fS+eysDi0B3gQ==",
+  "apiKey": "5a03a2c11ed56ea65b7e7e11107f638ec8acfb95165a6a50225c91a477a157c2",
+  "bankPublicId": "cmv2nmvn408tb01mny26u27ie",
+  "vaNumber": "VQRQAMRMQ5816",
+  "accountNo": "517041996",
+  "physicalAccountNo": "517041996",
+  "bankBin": "970422",
+  "accountName": "NGUYEN TRAN HAN",
   "endpointUrl": "https://app.apipay.vn/v1/client",
   "pollIntervalSeconds": 3,
   "testMode": false,
@@ -27,6 +27,7 @@
   "telegramChatIds": [
     "-5585627393"
   ],
-  "bankCode": "BIDV",
-  "paymentIntegrationVersion": "2026-10-24-apipay-bidv"
+  "bankCode": "MBBank",
+  "paymentIntegrationVersion": "2026-10-24-apipay-mbbank",
+  "bankName": "MBBank"
 }

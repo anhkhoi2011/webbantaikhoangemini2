@@ -382,7 +382,7 @@ if (strpos($requestUri, '/api/check-payment') !== false) {
         $used = false;
         foreach ($orders as $other) if (($other['orderId'] ?? '') !== $orderId && orderIsPaid($other) && (($other['paymentKey'] ?? '') === $key || ($other['paymentTxId'] ?? '') === ($tx['id'] ?? ''))) { $used = true; break; }
         if ($used) continue;
-        $order['status'] = empty($order['licenseLink']) ? 'Đã thanh toán (Chờ cấp link)' : 'Đã thanh toán (BIDV)';
+        $order['status'] = empty($order['licenseLink']) ? 'Đã thanh toán (Chờ cấp link)' : 'Đã thanh toán (MBBank)';
         $order['paymentTxId'] = $tx['id']; $order['paymentKey'] = $key;
         $order['paymentSource'] = $tx['source'] ?? 'Bank webhook';
         $order['paidAt'] = $tx['time'] ?? date('c');
@@ -402,7 +402,7 @@ if (strpos($requestUri, '/api/simulate-payment') !== false) {
         "id" => "SIM_" . rand(100000, 999999),
         "amount" => intval($body['amount'] ?? 119000),
         "description" => $memo,
-        "bank" => "BIDV",
+        "bank" => "MBBank",
         "time" => date('Y-m-d H:i:s'),
         "source" => "Simulated / Test Admin"
     ];
@@ -507,7 +507,7 @@ if (strpos($requestUri, '/api/webhook') !== false) {
                 "id" => isset($it['id']) ? (string)$it['id'] : $key,
                 "amount" => $amt,
                 "description" => $desc,
-                "bank" => isset($it['bank']) ? $it['bank'] : "BIDV",
+                "bank" => isset($it['bank']) ? $it['bank'] : "MBBank",
                 "time" => $it['paidAt'] ?? $it['completedAt'] ?? $it['transactionDateTime'] ?? $it['time'] ?? $it['updatedAt'] ?? date('c'),
                 "source" => "Webhook API Pay"
             ]);
@@ -523,7 +523,7 @@ if (strpos($requestUri, '/api/webhook') !== false) {
             $pending['paymentTxId'] = $tx['id']; $pending['paymentKey'] = $tx['paymentKey'] ?? paymentKey($tx);
             $pending['paidAt'] = $tx['time'] ?? date('c');
             $pending['paymentSource'] = $tx['source'] ?? 'Bank Webhook';
-            $pending['status'] = empty($pending['licenseLink']) ? 'Đã thanh toán (Chờ cấp link)' : 'Đã thanh toán (BIDV)';
+            $pending['status'] = empty($pending['licenseLink']) ? 'Đã thanh toán (Chờ cấp link)' : 'Đã thanh toán (MBBank)';
             try { syncSheetOrder(saveOrder($pending)); } catch (Throwable $error) { error_log('Payment reconciliation: ' . $error->getMessage()); }
             break;
         }

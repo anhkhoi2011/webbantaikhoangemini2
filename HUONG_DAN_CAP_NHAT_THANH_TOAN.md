@@ -1,6 +1,6 @@
-Cập nhật 24/10/2026: ApiPay BIDV - NGO ANH KHOI, STK 8809642706, VA V1T61023152838; chỉ thông báo Telegram về -5585627393.
+Cập nhật 24/10/2026: ApiPay MBBank - NGUYEN TRAN HAN, STK 517041996, VA VQRQAMRMQ5816; chỉ thông báo Telegram về -5585627393.
 
-Bản sửa ngày 24/10/2026 — build 2026-10-24-apipay-bidv
+Bản sửa ngày 24/10/2026 — build 2026-10-24-apipay-mbbank
 
 Mục tiêu: nối đúng lượt truy cập → link/nguồn → mã đơn → thanh toán → Telegram và Google Sheet.
 Tài liệu này hướng dẫn tích hợp Google Sheet đang dùng. Chưa có URL hoặc cấu hình một Google Form riêng.
@@ -23,7 +23,7 @@ Cập nhật lên hệ thống thật
 
 1. Mở Apps Script đang dùng, thay toàn bộ nội dung bằng GoogleAppsScript_CRM_AutoBot.js rồi lưu.
 2. Deploy → Manage deployments → sửa Web App hiện tại → Version: New version → Deploy. Giữ nguyên URL /exec.
-3. Mở URL /exec thêm ?action=health. Phải thấy: protocolVersion: 2, build: 2026-10-24-apipay-bidv, columns: 41, trafficColumns: 25.
+3. Mở URL /exec thêm ?action=health. Phải thấy: protocolVersion: 2, build: 2026-10-24-apipay-mbbank, columns: 41, trafficColumns: 25.
 4. Trên Vibe Host, mở đúng ứng dụng và bấm Triển khai lại từ main mới nhất. Máy chủ dùng Dockerfile Python tại gốc repo. Công tắc tự triển khai hiện tắt nên Git push chưa tự cập nhật website.
 5. Mở website lại để nhận JavaScript mới. Dùng URL quảng cáo có utm_source=facebook&utm_medium=paid_social; thêm chiến dịch/nhóm/mẫu trong các trường UTM tương ứng. Link sạch không đủ bằng chứng để xác nhận quảng cáo Facebook.
 6. Dùng lượt truy cập và giao dịch hợp lệ tiếp theo để kiểm tra: visitId trong TRUY_CAP = visitId trong DON_HANG = Mã lượt truy cập trong Telegram; URL/nguồn phải giống nhau, mã đơn đã thanh toán chỉ có khi đã thanh toán.

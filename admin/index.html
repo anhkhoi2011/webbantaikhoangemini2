@@ -842,7 +842,7 @@
                   <h3 class="text-base font-black text-slate-900">Cấu Hình Giá Bán & Gói Sản Phẩm (Tự Động Đồng Bộ Toàn Hệ Thống)</h3>
                   <span id="pricingSyncBadge" class="text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 px-2.5 py-0.5 rounded-full">✓ Tự Động Đồng Bộ Toàn Hệ Thống</span>
                 </div>
-                <p class="text-xs text-slate-600 mt-0.5 font-medium">Khi thay đổi giá tại đây: <b>Landing Page</b>, <b>Mã QR VietQR BIDV</b>, <b>Cổng API Pay tự quét</b>, <b>Tính toán Voucher</b> và <b>Thông báo Telegram</b> sẽ tự động cập nhật theo giá mới 100%.</p>
+                <p class="text-xs text-slate-600 mt-0.5 font-medium">Khi thay đổi giá tại đây: <b>Landing Page</b>, <b>Mã QR VietQR MBBank</b>, <b>Cổng API Pay tự quét</b>, <b>Tính toán Voucher</b> và <b>Thông báo Telegram</b> sẽ tự động cập nhật theo giá mới 100%.</p>
               </div>
             </div>
 
@@ -944,7 +944,7 @@
 
                   <div class="flex items-center justify-between bg-white/5 p-2.5 rounded-xl border border-white/5">
                     <span class="text-slate-300">Mã VietQR tạo cho khách:</span>
-                    <span id="previewQrAmount" class="font-mono font-black text-sky-300">119.000đ (BIDV)</span>
+                    <span id="previewQrAmount" class="font-mono font-black text-sky-300">119.000đ (MBBank)</span>
                   </div>
 
                   <div class="flex items-center justify-between bg-white/5 p-2.5 rounded-xl border border-white/5">
@@ -973,7 +973,7 @@
 
         
         <!-- ======================================================== -->
-        <!-- 0. CẤU HÌNH CỔNG THANH TOÁN TỰ ĐỘNG (API PAY / BIDV VIETQR AUTO-DETECT) -->
+        <!-- 0. CẤU HÌNH CỔNG THANH TOÁN TỰ ĐỘNG (API PAY / MBBank VIETQR AUTO-DETECT) -->
         <!-- ======================================================== -->
         <div class="bg-gradient-to-br from-indigo-50/70 via-white to-blue-50/40 p-6 rounded-2xl border-2 border-indigo-300 shadow-sm space-y-5 md:col-span-2">
           
@@ -986,10 +986,10 @@
               </div>
               <div>
                 <div class="flex items-center gap-2 flex-wrap">
-                  <h3 class="text-base font-black text-slate-900">Cấu Hình Cổng Thanh Toán Tự Động (API Pay / BIDV VietQR)</h3>
-                  <span id="paymentStatusBadge" class="text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 px-2.5 py-0.5 rounded-full">✓ Tự Động Nhận Diện BIDV</span>
+                  <h3 class="text-base font-black text-slate-900">Cấu Hình Cổng Thanh Toán Tự Động (API Pay / MBBank VietQR)</h3>
+                  <span id="paymentStatusBadge" class="text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 px-2.5 py-0.5 rounded-full">✓ Tự Động Nhận Diện MBBank</span>
                 </div>
-                <p class="text-xs text-slate-600 mt-0.5 font-medium">Kết nối trực tiếp API Pay / Webhook để tự động quét biến động số dư khi khách quét QR. Chỉ mở link bản quyền khi có tiền thật vào tài khoản BIDV.</p>
+                <p class="text-xs text-slate-600 mt-0.5 font-medium">Kết nối trực tiếp API Pay / Webhook để tự động quét biến động số dư khi khách quét QR. Chỉ mở link bản quyền khi có tiền thật vào tài khoản MBBank.</p>
               </div>
             </div>
 
@@ -1008,7 +1008,7 @@
             <div class="lg:col-span-7 bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
               <div class="flex items-center justify-between pb-2 border-b border-slate-100">
                 <span class="text-xs font-black text-slate-900 uppercase">Thông Số Cổng Kết Nối API Pay:</span>
-                <span class="text-xs font-mono font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">BIDV: 8809642706</span>
+                <span class="text-xs font-mono font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">MBBank: 517041996</span>
               </div>
 
               <div class="space-y-3 text-xs">
@@ -1016,10 +1016,10 @@
                   <div>
                     <label class="block font-bold text-slate-800 mb-1">1. Cổng Dịch Vụ Thanh Toán: <span class="text-red-500">*</span></label>
                     <select id="paymentProviderSelect" onchange="handlePaymentProviderChange()" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl font-bold text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-2xs">
-                      <option value="apipay" selected>APIPay.vn (Khuyên dùng - BIDV Auto-Detect)</option>
+                      <option value="apipay" selected>APIPay.vn (Khuyên dùng - MBBank Auto-Detect)</option>
                       <option value="casso">Casso.vn (Open API Ngân Hàng Việt Nam)</option>
                       <option value="payos">PayOS.vn (Cổng VietQR Tự Động)</option>
-                      <option value="mbbank_webhook">BIDV Webhook / SeAPay</option>
+                      <option value="mbbank_webhook">MBBank Webhook / SeAPay</option>
                       <option value="gas">Google Apps Script Webhook</option>
                     </select>
                   </div>
@@ -1048,8 +1048,8 @@
 
                 <div class="grid sm:grid-cols-2 gap-3">
                   <div>
-                    <label class="block font-bold text-slate-800 mb-1">5. Số Tài Khoản BIDV:</label>
-                    <input type="text" id="paymentAccountNoInput" value="8809642706" readonly
+                    <label class="block font-bold text-slate-800 mb-1">5. Số Tài Khoản MBBank:</label>
+                    <input type="text" id="paymentAccountNoInput" value="517041996" readonly
                       class="w-full p-2.5 bg-slate-100 border border-slate-300 rounded-xl font-mono font-bold text-xs text-slate-700 shadow-2xs">
                   </div>
                   <div>
@@ -1174,7 +1174,7 @@
               <div class="bg-white p-4.5 rounded-2xl border-2 border-emerald-200 shadow-2xs space-y-3 text-xs">
                 <div class="flex items-center justify-between">
                   <div class="font-black text-emerald-950 flex items-center gap-1.5">
-                    <span>🧪 Mô Phỏng Bắn Thử Giao Dịch BIDV (Test Sandbox)</span>
+                    <span>🧪 Mô Phỏng Bắn Thử Giao Dịch MBBank (Test Sandbox)</span>
                   </div>
                   <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">Không mất 90k</span>
                 </div>
@@ -1197,7 +1197,7 @@
             <div class="flex items-center justify-between pb-2 border-b border-slate-100">
               <div class="flex items-center gap-2">
                 <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
-                <span class="font-black text-slate-900 uppercase text-xs">Lịch Sử Biến Động Số Dư BIDV Thời Gian Thực (Live Bank Stream)</span>
+                <span class="font-black text-slate-900 uppercase text-xs">Lịch Sử Biến Động Số Dư MBBank Thời Gian Thực (Live Bank Stream)</span>
               </div>
               <div class="flex items-center gap-2">
                 <button onclick="renderBankTransactions()" class="text-blue-600 hover:underline font-bold text-[11px] cursor-pointer">🔄 Tải lại</button>
@@ -1954,7 +1954,7 @@
           <span class="text-base">💡</span>
           <div>
             <span class="font-bold text-slate-800">Cơ Chế Xác Nhận Tự Động 100%:</span>
-            Khi khách nhập mã voucher trên Landing Page (ví dụ: <code class="bg-rose-100 text-rose-800 px-1 py-0.5 rounded font-mono font-bold">SALE11</code>), hệ thống sẽ tính giá chính xác (<code class="bg-emerald-100 text-emerald-800 px-1 py-0.5 rounded font-mono font-bold">69.000đ</code>), mã VietQR BIDV sinh đúng số tiền 69.000đ, và webhook APIPay nhận diện đúng 69.000đ để tự động xác nhận thành công sau 3 giây mà không cần khách bấm nút.
+            Khi khách nhập mã voucher trên Landing Page (ví dụ: <code class="bg-rose-100 text-rose-800 px-1 py-0.5 rounded font-mono font-bold">SALE11</code>), hệ thống sẽ tính giá chính xác (<code class="bg-emerald-100 text-emerald-800 px-1 py-0.5 rounded font-mono font-bold">69.000đ</code>), mã VietQR MBBank sinh đúng số tiền 69.000đ, và webhook APIPay nhận diện đúng 69.000đ để tự động xác nhận thành công sau 3 giây mà không cần khách bấm nút.
           </div>
         </div>
       </div>
@@ -2703,7 +2703,7 @@
           licenseLink: o.licenseLink || '',
           referrer: o.referrer || 'Trực tiếp',
           ipLocation: `${o.ip || '127.0.0.1'} (${o.location || 'Việt Nam'})`,
-          status: o.status || 'Đã thanh toán (BIDV)'
+          status: o.status || 'Đã thanh toán (MBBank)'
         };
 
         try {
@@ -2971,7 +2971,7 @@
       const ord = orders.find(o => o.orderId === currentAssignOrderId);
       if (ord) {
         ord.licenseLink = link;
-        ord.status = 'Đã thanh toán (BIDV)';
+        ord.status = 'Đã thanh toán (MBBank)';
         ord.adminNote = 'Đã cấp link từ bot nguồn cấp link';
         localStorage.setItem('crm_orders', JSON.stringify(orders));
         syncOrderToBackend(ord);
@@ -2992,7 +2992,7 @@
       if (!ord) return;
 
       ord.licenseLink = link;
-      ord.status = 'Đã thanh toán (BIDV)';
+      ord.status = 'Đã thanh toán (MBBank)';
       ord.adminNote = 'Đã bàn giao link qua Zalo';
       localStorage.setItem('crm_orders', JSON.stringify(orders));
       syncOrderToBackend(ord);
@@ -3019,7 +3019,7 @@
       if (!ord) return;
 
       ord.licenseLink = link;
-      ord.status = 'Đã thanh toán (BIDV)';
+      ord.status = 'Đã thanh toán (MBBank)';
       ord.adminNote = 'Đã cấp link và gửi Gmail';
       
       showToast('Đang gửi email bản quyền tới ' + ord.email + '...');
@@ -3167,12 +3167,12 @@
       </table>
 
       <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 12px 14px; font-size: 12.5px; color: #1e40af;">
-        <strong>📞 Hỗ trợ kỹ thuật 24/7:</strong> Zalo hotline: <a href="https://zalo.me/0567960777" target="_blank" style="font-weight: 800; color: #1d4ed8; text-decoration: underline;">0567.960.777</a>
+        <strong>📞 Hỗ trợ kỹ thuật 24/7:</strong> Zalo hotline: <a href="https://zalo.me/0357811242" target="_blank" style="font-weight: 800; color: #1d4ed8; text-decoration: underline;">0357.811.242</a>
       </div>
     </div>
 
     <div style="background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 14px 20px; text-align: center; font-size: 11px; color: #94a3b8;">
-      © 2026 Google Gemini Pro Vietnam • Hotline/Zalo: 0567.960.777
+      © 2026 Google Gemini Pro Vietnam • Hotline/Zalo: 0357.811.242
     </div>
   </div>
 </body>
@@ -3391,7 +3391,7 @@
       const ord = orders.find(o => o.orderId === currentAssignOrderId);
       const name = ord ? ord.name : 'bạn';
       const orderId = ord ? ord.orderId : '';
-      const msg = `Chào bạn ${name}, cảm ơn bạn đã thanh toán đơn hàng ${orderId}.\n\nĐây là đường link nhận bản quyền Google Gemini Pro 18 Tháng chính chủ của bạn:\n👉 ${link}\n\n(Cách dùng: Bạn mở link trên tab trình duyệt đang đăng nhập Gmail cần nâng cấp -> Bấm "Tham gia" là hoàn tất kích hoạt ngay nhé!)\nCần hỗ trợ bạn nhắn hotline/Zalo 0567.960.777 nhé!`;
+      const msg = `Chào bạn ${name}, cảm ơn bạn đã thanh toán đơn hàng ${orderId}.\n\nĐây là đường link nhận bản quyền Google Gemini Pro 18 Tháng chính chủ của bạn:\n👉 ${link}\n\n(Cách dùng: Bạn mở link trên tab trình duyệt đang đăng nhập Gmail cần nâng cấp -> Bấm "Tham gia" là hoàn tất kích hoạt ngay nhé!)\nCần hỗ trợ bạn nhắn hotline/Zalo 0357.811.242 nhé!`;
       navigator.clipboard.writeText(msg);
       showToast('Đã sao chép tin nhắn bàn giao vào bộ nhớ!');
     }
@@ -4180,7 +4180,7 @@
         device: 'Quản trị viên',
         referrer: 'Tạo thủ công tại CRM',
         licenseLink: licenseLink,
-        status: 'Đã thanh toán (BIDV)',
+        status: 'Đã thanh toán (MBBank)',
         emailStatus: 'Đã gửi Gmail',
         adminNote: note || 'Tạo thủ công bởi Admin'
       };
@@ -4272,7 +4272,7 @@
         const link = o.licenseLink || '';
         const ref = o.referrer || 'Trực tiếp';
         const ipLoc = `${o.ip || ''} (${o.location || ''})`.replace(/"/g, '""');
-        const status = (o.status || 'Đã thanh toán (BIDV)').replace(/"/g, '""');
+        const status = (o.status || 'Đã thanh toán (MBBank)').replace(/"/g, '""');
         csv += `"${time}","${orderId}","${prod}","${amt}","${name}","${phone}","${email}","${memo}","${link}","${ref}","${ipLoc}","${status}"\n`;
       });
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -4299,7 +4299,7 @@
         const link = o.licenseLink || '';
         const ref = o.referrer || 'Trực tiếp';
         const ipLoc = `${o.ip || ''} (${o.location || ''})`;
-        const status = o.status || 'Đã thanh toán (BIDV)';
+        const status = o.status || 'Đã thanh toán (MBBank)';
         tsv += `${time}\t${orderId}\t${prod}\t${amt}\t${name}\t${phone}\t${email}\t${memo}\t${link}\t${ref}\t${ipLoc}\t${status}\n`;
       });
 
@@ -4368,7 +4368,7 @@
           licenseLink: "https://one.google.com/promo/gemini-pro/ACT-TEST-LINK",
           referrer: "Facebook Ads",
           ipLocation: "113.161.42.18 (Hà Nội, VN)",
-          status: "Đã thanh toán (BIDV)"
+          status: "Đã thanh toán (MBBank)"
         };
         await fetch(cfg.googleSheetWebhookUrl, {
           method: 'POST',
@@ -4403,7 +4403,7 @@
     }
 
     // ==========================================
-    // CỔNG THANH TOÁN TỰ ĐỘNG (API PAY / BIDV) & GOOGLE SHEETS
+    // CỔNG THANH TOÁN TỰ ĐỘNG (API PAY / MBBank) & GOOGLE SHEETS
     // ==========================================
     function getPaymentConfig() {
       const defaultCfg = {
@@ -4412,15 +4412,15 @@
         nextPrice: 129000,
         packageName: 'Gemini Pro 18 Tháng (5TB Cloud)',
         provider: 'apipay',
-        paymentIntegrationVersion: '2026-10-24-apipay-bidv',
-        bankCode: 'BIDV',
+        paymentIntegrationVersion: '2026-10-24-apipay-mbbank',
+        bankCode: 'MBBank',
         endpointUrl: 'https://app.apipay.vn/v1/client',
-        bankPublicId: 'cmvkpk77d128c01p4f27u9qy5',
-        vaNumber: 'V1T61023152838',
-        accountNo: 'V1T61023152838',
-        physicalAccountNo: '8809642706',
-        bankBin: '970418',
-        accountName: 'NGO ANH KHOI',
+        bankPublicId: 'cmv2nmvn408tb01mny26u27ie',
+        vaNumber: 'VQRQAMRMQ5816',
+        accountNo: '517041996',
+        physicalAccountNo: '517041996',
+        bankBin: '970422',
+        accountName: 'NGUYEN TRAN HAN',
         testMode: false,
         pollIntervalSeconds: 3,
         enabled: true,
@@ -4473,7 +4473,7 @@
       if (liveDisc) liveDisc.innerText = `-${discountPct}% (Tiết kiệm ${(orig - price).toLocaleString('vi-VN')}đ)`;
 
       const qrAmt = document.getElementById('previewQrAmount');
-      if (qrAmt) qrAmt.innerText = `${fmtPrice} (BIDV)`;
+      if (qrAmt) qrAmt.innerText = `${fmtPrice} (MBBank)`;
 
       const apiAmt = document.getElementById('previewApiAmount');
       if (apiAmt) apiAmt.innerText = `Khớp đúng ${fmtPrice}`;
@@ -4596,7 +4596,7 @@
           badge.innerText = "✓ Đã Kết Nối API Pay Thật";
         } else {
           badge.className = "text-xs font-bold bg-blue-100 text-blue-800 border border-blue-300 px-2.5 py-0.5 rounded-full";
-          badge.innerText = "● Sẵn Sàng (BIDV 8809642706)";
+          badge.innerText = "● Sẵn Sàng (MBBank 517041996)";
         }
       }
     }
@@ -4635,10 +4635,10 @@
       cfg.provider = provider;
       if (apiKey) { cfg.apiKey = apiKey; cfg.accessKey = apiKey; }
       cfg.endpointUrl = endpointUrl;
-      cfg.accountNo = cfg.vaNumber || 'V1T61023152838';
-      cfg.physicalAccountNo = '8809642706';
-      cfg.bankBin = '970418';
-      cfg.accountName = 'NGO ANH KHOI';
+      cfg.accountNo = cfg.physicalAccountNo || '517041996';
+      cfg.physicalAccountNo = '517041996';
+      cfg.bankBin = '970422';
+      cfg.accountName = 'NGUYEN TRAN HAN';
       cfg.pollIntervalSeconds = pollInterval;
       cfg.enabled = toggle ? toggle.checked : true;
       if (sheetInput) cfg.googleSheetWebhookUrl = sheetInput.value.trim();
@@ -4683,7 +4683,7 @@
         const res = await adminApiFetch('/api/apipay-test');
         const data = await res.json();
         if (data && data.status === 'success') {
-          showToast(`✓ ${data.message} (${data.accountName} - BIDV: ${data.accountNumber})`);
+          showToast(`✓ ${data.message} (${data.accountName} - MBBank: ${data.accountNumber})`);
         } else {
           showToast(`⚠️ Lỗi kết nối: ${data.message || 'Không kết nối được'}`);
         }
@@ -4722,7 +4722,7 @@
         id: "SIM_" + Math.floor(100000 + Math.random() * 900000),
         amount: 119000,
         description: memo,
-        bank: "BIDV",
+        bank: "MBBank",
         time: new Date().toLocaleTimeString('vi-VN') + ' ' + new Date().toLocaleDateString('vi-VN'),
         source: "Mô phỏng Sandbox Admin"
       };
@@ -4800,7 +4800,7 @@
             <td class="py-2.5 px-3 text-slate-600">${tx.time || ''}</td>
             <td class="py-2.5 px-3 text-right font-black text-emerald-700">+${parseInt(tx.amount || 119000).toLocaleString('vi-VN')}đ</td>
             <td class="py-2.5 px-3 font-bold text-amber-900">${tx.description || ''}</td>
-            <td class="py-2.5 px-3 text-slate-600">${tx.source || 'BIDV API Pay'}</td>
+            <td class="py-2.5 px-3 text-slate-600">${tx.source || 'MBBank API Pay'}</td>
             <td class="py-2.5 px-3 text-center">
               <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
                 ✓ Khớp Đơn
@@ -5851,14 +5851,14 @@
       <!-- HỖ TRỢ KỸ THUẬT -->
       <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 14px 16px; font-size: 13px; color: #1e40af;">
         <div style="font-weight: 700; margin-bottom: 4px;">📞 Bạn cần hỗ trợ hoặc kích hoạt giúp qua Ultraviewer?</div>
-        <div>Vui lòng liên hệ trực tiếp Zalo kỹ thuật viên: <a href="https://zalo.me/0567960777" target="_blank" style="font-weight: 800; color: #1d4ed8; text-decoration: underline;">0567.960.777</a> (Hỗ trợ 24/7).</div>
+        <div>Vui lòng liên hệ trực tiếp Zalo kỹ thuật viên: <a href="https://zalo.me/0357811242" target="_blank" style="font-weight: 800; color: #1d4ed8; text-decoration: underline;">0357.811.242</a> (Hỗ trợ 24/7).</div>
       </div>
 
     </div>
 
     <!-- FOOTER -->
     <div style="background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 16px 24px; text-align: center; font-size: 12px; color: #94a3b8;">
-      © 2026 Google Gemini Pro Vietnam • Hotline & Zalo: <a href="https://zalo.me/0567960777" style="color: #64748b; text-decoration: none;">0567.960.777</a><br>
+      © 2026 Google Gemini Pro Vietnam • Hotline & Zalo: <a href="https://zalo.me/0357811242" style="color: #64748b; text-decoration: none;">0357.811.242</a><br>
       Email tự động được gửi từ hệ thống CRM kích hoạt bản quyền.
     </div>
   </div>
@@ -6471,7 +6471,7 @@
       const link = (document.getElementById('manualActivationLink')?.value || '').trim();
       const error = validateManualSendData(email === 'Bạn' ? '' : email, link);
       if (error && !link) { setManualSendStatus(error, 'error'); return; }
-      const msg = `🎉 CHÚC MỪNG BẠN ĐÃ ĐĂNG KÝ THÀNH CÔNG GOOGLE GEMINI PRO 18 THÁNG!\n\n✉️ Gmail kích hoạt: ${email}\n🔑 Link nhận bản quyền của bạn:\n${link}\n\n👉 Hướng dẫn: Đăng nhập đúng Gmail cần nâng cấp, mở link trên rồi bấm Tham gia/Chấp nhận. Nếu dùng Gmail khác, hãy sao chép link và mở bằng tài khoản đó.\nCần hỗ trợ vui lòng nhắn Zalo kỹ thuật viên: 0567.960.777 (24/7).`;
+      const msg = `🎉 CHÚC MỪNG BẠN ĐÃ ĐĂNG KÝ THÀNH CÔNG GOOGLE GEMINI PRO 18 THÁNG!\n\n✉️ Gmail kích hoạt: ${email}\n🔑 Link nhận bản quyền của bạn:\n${link}\n\n👉 Hướng dẫn: Đăng nhập đúng Gmail cần nâng cấp, mở link trên rồi bấm Tham gia/Chấp nhận. Nếu dùng Gmail khác, hãy sao chép link và mở bằng tài khoản đó.\nCần hỗ trợ vui lòng nhắn Zalo kỹ thuật viên: 0357.811.242 (24/7).`;
       navigator.clipboard?.writeText(msg).then(() => setManualSendStatus('Đã copy tin nhắn bàn giao.', 'success')).catch(() => alert(msg));
     }
 
@@ -6480,7 +6480,7 @@
       const link = (document.getElementById('modalManualLink')?.value || '').trim();
       const error = validateManualSendData(email === 'Bạn' ? '' : email, link);
       if (error && !link) { setManualSendStatus(error, 'error', true); return; }
-      const msg = `🎉 CHÚC MỪNG BẠN ĐÃ ĐĂNG KÝ THÀNH CÔNG GOOGLE GEMINI PRO 18 THÁNG!\n\n✉️ Gmail kích hoạt: ${email}\n🔑 Link nhận bản quyền của bạn:\n${link}\n\n👉 Hướng dẫn: Đăng nhập đúng Gmail cần nâng cấp, mở link trên rồi bấm Tham gia/Chấp nhận. Nếu dùng Gmail khác, hãy sao chép link và mở bằng tài khoản đó.\nCần hỗ trợ vui lòng nhắn Zalo kỹ thuật viên: 0567.960.777 (24/7).`;
+      const msg = `🎉 CHÚC MỪNG BẠN ĐÃ ĐĂNG KÝ THÀNH CÔNG GOOGLE GEMINI PRO 18 THÁNG!\n\n✉️ Gmail kích hoạt: ${email}\n🔑 Link nhận bản quyền của bạn:\n${link}\n\n👉 Hướng dẫn: Đăng nhập đúng Gmail cần nâng cấp, mở link trên rồi bấm Tham gia/Chấp nhận. Nếu dùng Gmail khác, hãy sao chép link và mở bằng tài khoản đó.\nCần hỗ trợ vui lòng nhắn Zalo kỹ thuật viên: 0357.811.242 (24/7).`;
       navigator.clipboard?.writeText(msg).then(() => setManualSendStatus('Đã copy tin nhắn bàn giao.', 'success', true)).catch(() => alert(msg));
     }
 
