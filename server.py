@@ -449,6 +449,15 @@ class GeminiCRMHandler(SimpleHTTPRequestHandler):
         # 1. API: Cấu hình cổng thanh toán
         if path == "/api/payment-config":
             cfg = read_json_file("payment_config.json", {})
+            # Never expose the ApiPay VA as the transfer account. This identity is
+            # fixed for web2 even if an older JSON file is still on the server.
+            cfg.update({
+                "accountNo": "517041996",
+                "physicalAccountNo": "517041996",
+                "bankBin": "970422",
+                "accountName": "NGUYEN TRAN HAN",
+                "bankCode": "MBBank"
+            })
             public_keys = {"packagePrice", "originalPrice", "nextPrice", "packageName", "provider", "bankPublicId", "vaNumber", "accountNo", "physicalAccountNo", "bankBin", "accountName", "pollIntervalSeconds", "testMode", "enabled", "pixelId", "pixelEnabled", "bankCode", "paymentIntegrationVersion"}
             return self.send_json({k: v for k, v in cfg.items() if k in public_keys})
 
@@ -983,6 +992,13 @@ class GeminiCRMHandler(SimpleHTTPRequestHandler):
                 if key in body and not str(body[key] or "").strip():
                     body.pop(key)
             current_cfg.update(body)
+            current_cfg.update({
+                "accountNo": "517041996",
+                "physicalAccountNo": "517041996",
+                "bankBin": "970422",
+                "accountName": "NGUYEN TRAN HAN",
+                "bankCode": "MBBank"
+            })
             write_json_file("payment_config.json", current_cfg)
             return self.send_json({"status": "success", "message": "Payment and pricing config saved", "config": current_cfg})
 

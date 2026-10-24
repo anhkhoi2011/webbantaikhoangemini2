@@ -217,10 +217,21 @@ if (strpos($requestUri, '/api/payment-config') !== false) {
         foreach (['apiKey','accessKey','secretKey'] as $key) {
             if (array_key_exists($key, $body) && trim((string)$body[$key]) === '') unset($body[$key]);
         }
-        writeJsonFile('payment_config.json', array_replace($current, $body));
+        $saved = array_replace($current, $body);
+        $saved['accountNo'] = '517041996';
+        $saved['physicalAccountNo'] = '517041996';
+        $saved['bankBin'] = '970422';
+        $saved['accountName'] = 'NGUYEN TRAN HAN';
+        $saved['bankCode'] = 'MBBank';
+        writeJsonFile('payment_config.json', $saved);
         echo json_encode(["status" => "success", "message" => "Payment config saved"]);
     } else {
         $cfg = readJsonFile('payment_config.json', []);
+        $cfg['accountNo'] = '517041996';
+        $cfg['physicalAccountNo'] = '517041996';
+        $cfg['bankBin'] = '970422';
+        $cfg['accountName'] = 'NGUYEN TRAN HAN';
+        $cfg['bankCode'] = 'MBBank';
         foreach (['apiKey','accessKey','secretKey','googleSheetWebhookUrl','googleSheetUrl','appsScriptProjectUrl','telegramBotToken','telegramChatId'] as $secretKey) unset($cfg[$secretKey]);
         echo json_encode($cfg);
     }
