@@ -26,7 +26,7 @@ if sys.stdout.encoding != 'utf-8':
 
 import os
 
-DEFAULT_BOT_TOKEN = "8941091346:AAF6mygABxGPqjJKg4aEZjYXIp9e2pVcqs4"
+DEFAULT_BOT_TOKEN = "8924743387:AAHmuHUEUyK2XtRL4N6dUEbHf98xmj1wE2c"
 DEFAULT_CHAT_ID = "-1004413665683"
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 

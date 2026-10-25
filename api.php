@@ -428,7 +428,7 @@ if (strpos($requestUri, '/api/simulate-payment') !== false) {
 if (strpos($requestUri, '/api/telegram-notify') !== false) {
     $body = getPostJson();
     $teleCfg = readJsonFile('telegram_config.json', []);
-    $botToken = $teleCfg['botToken'] ?? '8941091346:AAF6mygABxGPqjJKg4aEZjYXIp9e2pVcqs4';
+    $botToken = $teleCfg['botToken'] ?? '8924743387:AAHmuHUEUyK2XtRL4N6dUEbHf98xmj1wE2c';
     $chatId = '-1004413665683'; // Web2 notifications use one fixed chat.
     
     $res = @file_get_contents("https://api.telegram.org/bot{$botToken}/sendMessage?" . http_build_query([
@@ -445,7 +445,7 @@ if (strpos($requestUri, '/api/telegram-notify') !== false) {
 if (strpos($requestUri, '/api/admin-login-notify') !== false) {
     $body = getPostJson();
     $teleCfg = readJsonFile('telegram_config.json', []);
-    $botToken = $teleCfg['botToken'] ?? '8941091346:AAF6mygABxGPqjJKg4aEZjYXIp9e2pVcqs4';
+    $botToken = $teleCfg['botToken'] ?? '8924743387:AAHmuHUEUyK2XtRL4N6dUEbHf98xmj1wE2c';
     $chatId = '-1004413665683'; // Web2 notifications use one fixed chat.
 
     $msg = "🛡️ <b>ĐĂNG NHẬP ADMIN THÀNH CÔNG</b>\n" .

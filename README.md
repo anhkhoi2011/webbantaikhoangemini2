@@ -93,7 +93,7 @@ powershell -ExecutionPolicy Bypass -File .\server.ps1
 Chỉnh sửa trong [telegram_config.json](file:///c:/Users/Admin/Desktop/GI%C3%80U%20SANG%20PH%C3%9A%20QU%C3%9D/gemini-pro-crm-fullsource/telegram_config.json) hoặc cấu hình trực tiếp từ giao diện Admin:
 ```json
 {
-  "botToken": "8941091346:AAF6mygABxGPqjJKg4aEZjYXIp9e2pVcqs4",
+  "botToken": "8924743387:AAHmuHUEUyK2XtRL4N6dUEbHf98xmj1wE2c",
   "chatId": "-1004413665683",
   "lowStockThreshold": 5,
   "dailyReportTime": "10:00",

@@ -19,7 +19,7 @@ const BOT_CONFIG = {
   SPREADSHEET_URL: "https://docs.google.com/spreadsheets/d/17JXfu0NcYQ2sJ9AQn8ZR-gOIYDQBgTquT4bu9pM6QrE/edit?gid=0#gid=0",
 
   // Token Bot Telegram thông báo đơn hàng:
-  TELEGRAM_BOT_TOKEN: "8941091346:AAF6mygABxGPqjJKg4aEZjYXIp9e2pVcqs4",
+  TELEGRAM_BOT_TOKEN: "8924743387:AAHmuHUEUyK2XtRL4N6dUEbHf98xmj1wE2c",
   
   // ID Nhóm chat Telegram nhận thông báo:
   TELEGRAM_CHAT_ID: "-1004413665683",

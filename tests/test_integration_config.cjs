@@ -11,15 +11,15 @@ function extract(html, name) {
 for (const file of ['index.html', 'admin.html', 'admin/index.html']) {
   const html = fs.readFileSync(file, 'utf8');
   const store = new Map([
-    ['crm_tele_config', JSON.stringify({botToken:'test-token', chatId:'-11111', chatIds:['-11111','-22222'], enabled:true})],
+    ['crm_tele_config', JSON.stringify({botToken:'test-token', telegramBotVersion:'previous-bot', chatId:'-11111', chatIds:['-11111','-22222'], enabled:true})],
     ['crm_payment_api_config', JSON.stringify({apiKey:'stale-access', accessKey:'stale-access', secretKey:'stale-secret', accountNo:'OLD-ACCOUNT', bankBin:'OLD-BANK', bankPublicId:'OLD-ID', packagePrice:129000})]
   ]);
   const ctx = {localStorage:{getItem:k=>store.get(k)||null,setItem:(k,v)=>store.set(k,v)}, CONFIG:{accountNo:'517041996', bankBin:'970422', accountName:'NGUYEN TRAN HAN'}, console};
   vm.createContext(ctx);
   vm.runInContext(extract(html,'getTelegramConfig'),ctx);
   const tele = ctx.getTelegramConfig();
-  assert.ok(tele.botToken.startsWith('8941091346:'),file+': stale bot must be migrated');
-  assert.equal(tele.telegramBotVersion,'8941091346');
+  assert.ok(tele.botToken.startsWith('8924743387:'),file+': stale bot must be migrated');
+  assert.equal(tele.telegramBotVersion,'8924743387');
   assert.equal(JSON.parse(store.get('crm_tele_config')).botToken,tele.botToken);
   assert.equal(tele.chatId,target,file);
   assert.deepEqual(Array.from(tele.chatIds),[target],file);
@@ -54,4 +54,11 @@ assert.equal(cfg.telegramChatId,target);
 assert.deepEqual(cfg.telegramChatIds,[target]);
 assert.equal(telegram.chatId,target);
 assert.deepEqual(telegram.chatIds,[target]);
+assert.ok(telegram.botToken.startsWith('8924743387:'));
+assert.equal(telegram.telegramBotVersion,'8924743387');
+assert.equal(cfg.telegramBotToken,telegram.botToken);
+for (const file of ['telegram_sender.py','api.php','GoogleAppsScript_CRM_AutoBot.js']) {
+  assert.ok(fs.readFileSync(file,'utf8').includes(telegram.botToken),file+': bot must match web2 config');
+}
+
 console.log('PASS integration config: MBBank, one Telegram chat, stale browser migration, no payment credentials in public HTML');

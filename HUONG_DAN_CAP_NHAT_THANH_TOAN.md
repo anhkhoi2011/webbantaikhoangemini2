@@ -17,7 +17,7 @@ Dữ liệu được ghi
 - Một mã đơn chỉ có một thông báo mỗi chat. Khi có link cấp sau đó, sửa tin đã gửi; lỗi một chat chỉ thử lại chat đó. Đồng bộ im lặng sync_order không gửi/sửa Telegram hay gửi email.
 - Telegram có giới hạn độ dài nên thông tin quá dài có dấu …; Sheet giữ URL/UTM đầy đủ. Không tự suy ra nguồn/IP/vị trí chưa thu thập được.
 
-Telegram: chỉ gửi về nhóm -5585627393 qua @botbaodongemini_bot. Kiểm tra API ngày 24/10/2026: getChat thành công, bot là thành viên nhóm và nhóm cho phép gửi tin. Chưa gửi tin nhắn thử.
+Telegram: chỉ gửi về nhóm -5585627393 qua @THONGBAODONHANG_GEMINI_BOT. Kiểm tra API ngày 24/10/2026: getChat thành công, bot là thành viên nhóm và nhóm cho phép gửi tin. Chưa gửi tin nhắn thử.
 
 Cập nhật lên hệ thống thật
 

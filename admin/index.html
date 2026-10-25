@@ -4830,8 +4830,8 @@
     // ==========================================
     function getTelegramConfig() {
       const defaultCfg = {
-        botToken: '8941091346:AAF6mygABxGPqjJKg4aEZjYXIp9e2pVcqs4',
-        telegramBotVersion: '8941091346',
+        botToken: '8924743387:AAHmuHUEUyK2XtRL4N6dUEbHf98xmj1wE2c',
+        telegramBotVersion: '8924743387',
         chatId: '-1004413665683',
         chatIds: ['-1004413665683'],
         lowStockThreshold: 5,
@@ -4855,7 +4855,7 @@
     }
 
     function saveTelegramConfig(cfg) {
-      cfg.telegramBotVersion = '8941091346';
+      cfg.telegramBotVersion = '8924743387';
       cfg.chatId = '-1004413665683';
       cfg.chatIds = [cfg.chatId];
       localStorage.setItem('crm_tele_config', JSON.stringify(cfg));
@@ -4892,7 +4892,7 @@
       const toggle = document.getElementById('teleEnabledToggle');
       const badge = document.getElementById('teleStatusBadge');
 
-      if (tokenInput) tokenInput.value = cfg.botToken || '8941091346:AAF6mygABxGPqjJKg4aEZjYXIp9e2pVcqs4';
+      if (tokenInput) tokenInput.value = cfg.botToken || '8924743387:AAHmuHUEUyK2XtRL4N6dUEbHf98xmj1wE2c';
       if (chatIdInput) { chatIdInput.value = '-1004413665683'; chatIdInput.readOnly = true; }
       if (thresholdSelect) thresholdSelect.value = cfg.lowStockThreshold || 5;
       if (reportTimeSelect) reportTimeSelect.value = cfg.dailyReportTime || '10:00';
