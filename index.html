@@ -564,7 +564,7 @@
 
     </div>
 
-    <!-- HƯỚNG DẪN MUA HÀNG: khung video chờ nội dung và quy trình nhận bản quyền -->
+    <!-- HƯỚNG DẪN MUA HÀNG: video tự phát và quy trình nhận bản quyền -->
     <section id="purchaseGuideSection" class="purchase-guide" aria-labelledby="purchaseGuideTitle">
       <div class="guide-heading">
         <div>
@@ -578,10 +578,10 @@
       <div class="guide-layout">
         <div class="guide-video-column">
           <div id="purchaseGuideVideoFrame" class="guide-video-frame">
-            <div id="purchaseGuidePlaceholder" class="guide-video-placeholder">
+            <div id="purchaseGuidePlaceholder" class="guide-video-placeholder" hidden>
               <div class="video-cover-top">
                 <span class="video-cover-brand"><img src="/logo-icon.png" alt="" width="28" height="28"> TRẠM CÔNG NGHỆ</span>
-                <span id="purchaseGuideVideoBadge" class="video-coming-badge">Sắp có video</span>
+                <span id="purchaseGuideVideoBadge" class="video-coming-badge">Video hướng dẫn</span>
               </div>
               <div class="video-cover-center">
                 <span class="video-play-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 5.7v12.6c0 .8.9 1.3 1.6.9l9-6.3a1.1 1.1 0 0 0 0-1.8l-9-6.3C9.9 4.4 9 4.9 9 5.7Z"/></svg></span>
@@ -593,9 +593,9 @@
                 <span><b>01</b> Điền thông tin</span><span><b>02</b> Thanh toán QR</span><span><b>03</b> Nhận bản quyền</span>
               </div>
             </div>
-            <video id="purchaseGuideVideo" class="guide-video-player" controls playsinline preload="metadata" hidden aria-label="Video hướng dẫn mua hàng và nhận bản quyền Gemini Pro"></video>
+            <video id="purchaseGuideVideo" class="guide-video-player" src="1024(1).mp4" controls autoplay muted playsinline preload="auto" aria-label="Video hướng dẫn mua hàng và nhận bản quyền Gemini Pro"></video>
           </div>
-          <p id="purchaseGuideVideoStatus" class="guide-video-caption" role="status"><span class="caption-dot" aria-hidden="true"></span> Video hướng dẫn sẽ được cập nhật sớm. Bạn có thể làm theo 3 bước hướng dẫn để đặt hàng ngay.</p>
+          <p id="purchaseGuideVideoStatus" class="guide-video-caption" role="status"><span class="caption-dot" aria-hidden="true"></span> Video tự phát ở chế độ tắt tiếng. Bấm biểu tượng loa để bật tiếng hoặc mở toàn màn hình để xem rõ hơn.</p>
         </div>
 
         <div id="purchaseGuideSteps" class="guide-process">
@@ -1597,8 +1597,8 @@
       packageName: "Gemini Pro 18 Tháng (5TB Cloud)",
       originalPrice: 8802000,
       nextPrice: 129000,
-      // Add the tutorial MP4/WebM URL here when the video is ready.
-      purchaseGuideVideoUrl: '',
+      // Video hướng dẫn tự phát khi khách truy cập trang.
+      purchaseGuideVideoUrl: '1024(1).mp4',
       googleAppsScriptUrl: "https://script.google.com/macros/s/AKfycbyn1IIEyU6SX9ywlIRasV1GlhJSg0Sj6crMX3HqEJxyNXPji8tasMTV74pQu4tkuNSp/exec"
     };
 
@@ -1616,12 +1616,24 @@
       video.onerror = () => {
         video.hidden = true;
         placeholder.hidden = false;
+        const badge = document.getElementById('purchaseGuideVideoBadge');
+        if (badge) badge.textContent = 'Video tạm chưa khả dụng';
         if (status) status.textContent = 'Video tạm chưa khả dụng. Bạn vẫn có thể làm theo 3 bước hướng dẫn để đặt hàng.';
       };
-      video.src = url.href;
+      video.autoplay = true;
+      video.defaultMuted = true;
+      video.muted = true;
+      video.playsInline = true;
+      if (video.src !== url.href) video.src = url.href;
       video.hidden = false;
       placeholder.hidden = true;
-      if (status) status.textContent = 'Xem video hướng dẫn mua hàng, thanh toán và nhận link kích hoạt. Bạn có thể bật toàn màn để theo dõi rõ hơn.';
+      if (status) status.textContent = 'Video tự phát ở chế độ tắt tiếng. Bấm biểu tượng loa để bật tiếng hoặc mở toàn màn hình để xem rõ hơn.';
+      const playback = video.play();
+      if (playback && typeof playback.catch === 'function') {
+        playback.catch(() => {
+          if (status && !video.error) status.textContent = 'Bấm nút phát để xem video hướng dẫn. Bấm biểu tượng loa để bật tiếng.';
+        });
+      }
     }
 
     function enforcePaymentIdentity() {
