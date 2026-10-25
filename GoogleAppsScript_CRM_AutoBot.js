@@ -22,8 +22,8 @@ const BOT_CONFIG = {
   TELEGRAM_BOT_TOKEN: "8941091346:AAF6mygABxGPqjJKg4aEZjYXIp9e2pVcqs4",
   
   // ID Nhóm chat Telegram nhận thông báo:
-  TELEGRAM_CHAT_ID: "-5585627393",
-  TELEGRAM_CHAT_IDS: ["-5585627393"],
+  TELEGRAM_CHAT_ID: "-1004413665683",
+  TELEGRAM_CHAT_IDS: ["-1004413665683"],
 
   // Tên thương hiệu hiển thị trong email:
   BRAND_NAME: "TRẠM CÔNG NGHỆ - Gemini Pro",

@@ -429,7 +429,7 @@ if (strpos($requestUri, '/api/telegram-notify') !== false) {
     $body = getPostJson();
     $teleCfg = readJsonFile('telegram_config.json', []);
     $botToken = $teleCfg['botToken'] ?? '8941091346:AAF6mygABxGPqjJKg4aEZjYXIp9e2pVcqs4';
-    $chatId = $teleCfg['chatId'] ?? '-5585627393';
+    $chatId = '-1004413665683'; // Web2 notifications use one fixed chat.
     
     $res = @file_get_contents("https://api.telegram.org/bot{$botToken}/sendMessage?" . http_build_query([
         'chat_id' => $chatId,
@@ -446,7 +446,7 @@ if (strpos($requestUri, '/api/admin-login-notify') !== false) {
     $body = getPostJson();
     $teleCfg = readJsonFile('telegram_config.json', []);
     $botToken = $teleCfg['botToken'] ?? '8941091346:AAF6mygABxGPqjJKg4aEZjYXIp9e2pVcqs4';
-    $chatId = $teleCfg['chatId'] ?? '-5585627393';
+    $chatId = '-1004413665683'; // Web2 notifications use one fixed chat.
 
     $msg = "🛡️ <b>ĐĂNG NHẬP ADMIN THÀNH CÔNG</b>\n" .
            "Thời gian: " . ($body['time'] ?? date('d/m/Y H:i:s')) . "\n" .

@@ -4832,8 +4832,8 @@
       const defaultCfg = {
         botToken: '8941091346:AAF6mygABxGPqjJKg4aEZjYXIp9e2pVcqs4',
         telegramBotVersion: '8941091346',
-        chatId: '-5585627393',
-        chatIds: ['-5585627393'],
+        chatId: '-1004413665683',
+        chatIds: ['-1004413665683'],
         lowStockThreshold: 5,
         dailyReportTime: '10:00',
         enabled: true
@@ -4856,7 +4856,7 @@
 
     function saveTelegramConfig(cfg) {
       cfg.telegramBotVersion = '8941091346';
-      cfg.chatId = '-5585627393';
+      cfg.chatId = '-1004413665683';
       cfg.chatIds = [cfg.chatId];
       localStorage.setItem('crm_tele_config', JSON.stringify(cfg));
       // Đồng bộ về backend server
@@ -4893,7 +4893,7 @@
       const badge = document.getElementById('teleStatusBadge');
 
       if (tokenInput) tokenInput.value = cfg.botToken || '8941091346:AAF6mygABxGPqjJKg4aEZjYXIp9e2pVcqs4';
-      if (chatIdInput) { chatIdInput.value = '-5585627393'; chatIdInput.readOnly = true; }
+      if (chatIdInput) { chatIdInput.value = '-1004413665683'; chatIdInput.readOnly = true; }
       if (thresholdSelect) thresholdSelect.value = cfg.lowStockThreshold || 5;
       if (reportTimeSelect) reportTimeSelect.value = cfg.dailyReportTime || '10:00';
       if (toggle) toggle.checked = cfg.enabled !== false;

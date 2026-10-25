@@ -94,7 +94,7 @@ Chỉnh sửa trong [telegram_config.json](file:///c:/Users/Admin/Desktop/GI%C3%
 ```json
 {
   "botToken": "8941091346:AAF6mygABxGPqjJKg4aEZjYXIp9e2pVcqs4",
-  "chatId": "-5585627393",
+  "chatId": "-1004413665683",
   "lowStockThreshold": 5,
   "dailyReportTime": "10:00",
   "enabled": true

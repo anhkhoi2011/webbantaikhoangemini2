@@ -1,7 +1,7 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
-const target = '-5585627393';
+const target = '-1004413665683';
 function extract(html, name) {
   const start = html.indexOf('    function ' + name + '(');
   assert.ok(start >= 0, name);
@@ -24,6 +24,15 @@ for (const file of ['index.html', 'admin.html', 'admin/index.html']) {
   assert.equal(tele.chatId,target,file);
   assert.deepEqual(Array.from(tele.chatIds),[target],file);
   assert.equal(JSON.parse(store.get('crm_tele_config')).chatId,target);
+  if (file !== 'index.html') {
+    ctx.adminApiFetch = async () => ({ok:true});
+    ctx.syncTelegramUI = () => {};
+    vm.runInContext(extract(html,'saveTelegramConfig'),ctx);
+    ctx.saveTelegramConfig({chatId:'-OLD-CHAT',chatIds:['-OLD-CHAT','-EXTRA-CHAT']});
+    const saved = JSON.parse(store.get('crm_tele_config'));
+    assert.equal(saved.chatId,target,file+': save must keep the web2 recipient');
+    assert.deepEqual(saved.chatIds,[target],file+': save must remove extra recipients');
+  }
   const paymentFunction = file === 'index.html' ? 'getPaymentApiConfig' : 'getPaymentConfig';
   vm.runInContext(extract(html,paymentFunction),ctx);
   const payment = ctx[paymentFunction]();

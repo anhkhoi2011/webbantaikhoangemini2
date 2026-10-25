@@ -27,21 +27,20 @@ if sys.stdout.encoding != 'utf-8':
 import os
 
 DEFAULT_BOT_TOKEN = "8941091346:AAF6mygABxGPqjJKg4aEZjYXIp9e2pVcqs4"
-DEFAULT_CHAT_ID = "-5585627393"
+DEFAULT_CHAT_ID = "-1004413665683"
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def get_current_tele_config():
-    token, ids = None, []
+    token = None
     for filename in ["telegram_config.json", "payment_config.json"]:
         try:
             with open(os.path.join(BASE_DIR, filename), encoding="utf-8-sig") as f:
                 config = json.load(f)
             token = token or config.get("botToken") or config.get("telegramBotToken")
-            values = config.get("chatIds") or config.get("telegramChatIds") or [config.get("chatId") or config.get("telegramChatId")]
-            ids.extend(str(value) for value in values if value)
         except (OSError, ValueError):
             pass
-    return token or DEFAULT_BOT_TOKEN, list(dict.fromkeys(ids or [DEFAULT_CHAT_ID]))
+    # Web2 has one recipient; stale config files must not add other chats.
+    return token or DEFAULT_BOT_TOKEN, [DEFAULT_CHAT_ID]
 
 def send_telegram_raw(html_text, bot_token=None, chat_id=None):
     token, default_ids = get_current_tele_config()

@@ -47,7 +47,7 @@ const base={orderId:'#TEST-A',amount:90000,amountRaw:90000,name:'Khách <test>',
  assert.equal(e.sheets.has('GIAO_DICH'),false,'new_order must never become a raw bank event');
  assert.equal(e.sheets.get('DON_HANG').rows.length,2);
  assert.equal(e.sends.length,1,'one notification per chat');
- assert.deepEqual(e.sends.map(x=>x.chat_id),['-5585627393']);
+ assert.deepEqual(e.sends.map(x=>x.chat_id),['-1004413665683']);
  assert.ok(e.sends[0].text.includes('203.0.113.5'));
  assert.ok(e.sends[0].text.includes('Khách &lt;test&gt;'));
  const row=e.sheets.get('DON_HANG').rows[1];
@@ -56,10 +56,10 @@ const base={orderId:'#TEST-A',amount:90000,amountRaw:90000,name:'Khách <test>',
  e.post({...base,action:'pending_order',status:'Chờ thanh toán'});assert.equal(e.sheets.get('DON_HANG').rows[1][11],base.status,'late pending must not downgrade paid');
 }
 {
- const e=environment();e.fail('-5585627393');
+ const e=environment();e.fail('-1004413665683');
  assert.equal(e.post({...base,action:'new_order'}).notificationsComplete,false);
  e.fail('');assert.equal(e.post({...base,action:'new_order'}).notificationsComplete,true);
- assert.deepEqual(e.sends.map(x=>x.chat_id),['-5585627393','-5585627393']);
+ assert.deepEqual(e.sends.map(x=>x.chat_id),['-1004413665683','-1004413665683']);
 }
 {
  const e=environment();
@@ -149,13 +149,13 @@ const base={orderId:'#TEST-A',amount:90000,amountRaw:90000,name:'Khách <test>',
 {
  const e=environment();
  e.post({...base,action:'new_order'});
- e.fail('-5585627393');
+ e.fail('-1004413665683');
  const issued={...base,action:'new_order',licenseLink:'https://example.invalid/link',status:'Đã thanh toán (MBBank)'};
  assert.equal(e.post(issued).notificationsComplete,false);
  e.fail('');
  assert.equal(e.post(issued).notificationsComplete,true);
  assert.equal(e.sends.length,1,'an edit retry must never create a duplicate order notification');
- assert.deepEqual(e.edits.map(x=>x.chat_id),['-5585627393','-5585627393']);
+ assert.deepEqual(e.edits.map(x=>x.chat_id),['-1004413665683','-1004413665683']);
 }
 {
  const e=environment();
